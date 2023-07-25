@@ -44,10 +44,10 @@ function registrarUsuario(){
 
             //Implementacion de la API - Prueba
             //Resultado obtenido: 409 Ya existe un usuario con ese nombre.
-            /*fetch(censoAPI + "/usuarios.php",
+            fetch(censoAPI + "/usuarios.php",
                 {
                     method:"POST",
-                    headers:{
+                    Headers:{
                         "Content-Type":"application/json"
                     },
                     body:JSON.stringify({"email": user,
@@ -61,7 +61,7 @@ function registrarUsuario(){
                 })
                 .catch(function (Error){
                     console.log(Error);
-                })*/
+                })
         }
         else{
             document.querySelector("#registro-msg").innerHTML = "No creado.";
@@ -74,62 +74,33 @@ function registrarUsuario(){
 
 
 
-/*function iniciarSesion(){
-
-    let userLog = document.querySelector("#txtUserLogin").value;
-    let passLog = document.querySelector("#txtPassLogin").value;
-
-    if(BuscarUsuario(userLog, passLog)){
-        hayUsuarioLogueado = true;
-        mostrarNav();
-        document.querySelector("#login-msg").innerHTML = "Usuario encontrado.";
-    }
-    else{
-        document.querySelector("#login-msg").innerHTML = "Usuario no encontrado.";
-    }
-    
-    /*try{
-        if (userLog.trim().length == 0 == 0 && passLog.trim().length == 0) {
-            throw new Error("Datos incorrectos.");
-        }
-
-        if(BuscarUsuario(userLog, passLog)){
-            hayUsuarioLogueado = true;
-            mostrarNav();
-            console.log(hayUsuarioLogueado);
-        }
-    }
-    catch (Error){
-        document.querySelector("#login-msg").innerHTML = Error.message;
-    }
-
-}*/
-
-
-
-function iniciarSesion() {
+function iniciarSesion(){
     let nombreUsuario = document.querySelector("#txtUserLogin").value;
     let password = document.querySelector("#txtPassLogin").value;
-    document.querySelector("#login-msg").innerHTML = "";
-    try {
-        if (nombreUsuario.trim().length == 0 || password.trim().length == 0) {
-            throw new Error("Los datos no son correctos");
-        }
+    fetch(censoAPI + "/login.php",{
+        method:"POST",
+        Headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+            "usuario": nombreUsuario,
+            "password": password
+        })
+    })
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(data){
+        
+        document.querySelector("#login-msg").innerHTML = "Encontrado";
+    })
+    .catch(function(error){
+        document.querySele>tor("#login-msg").innerHTML = error;
+    })
 
-        if (BuscarUsuario(nombreUsuario, password)) {
-            hayUsuarioLogueado = true;
-            mostrarNav();
-            document.querySelector("#login-msg").innerHTML = "Encontrado";
-        }
-        else {
-            throw new Error("Datos incorrectos");
-        }
-
-    } catch (Error) {
-        document.querySelector("#login-msg").innerHTML = Error.message;
-
-    }
 }
+
+
 
 
 
@@ -150,21 +121,6 @@ function BuscarUsuario(nombreUsuario, password) {
 
 
 
-
-
-
-
-
-/*function BuscarUsuario(user, pass){
-    let existe = false;
-    for(let i = 0; i < usuarios.length; i++){
-        const element = usuarios[i];
-        if(element.user === user && element.pass === pass){
-            existe = true;
-        }
-    }
-    return existe;
-}*/
 
 
 
@@ -208,3 +164,5 @@ function mostrarNav(){
         document.querySelector("#sec-mapa").style.display = "none";
     }
 }
+
+
