@@ -7,3 +7,5 @@ class Persona{
         this.ocupacion = ocupacion;
     }
 }
+
+
