@@ -81,7 +81,9 @@
                         <ion-input label="Contraseña: " type="password" id="txtPass"></ion-input>
                     </ion-item>
 
-                    <ion-button color="dark">Registrar usuario</ion-button>
+                    <ion-button color="dark" id="btnRegistrar">Registrar usuario</ion-button>
+
+                    <ion-item><p id="registro-msg"></p></ion-item>
                 </ion-list>
             </ion-content>
         </ion-page>
@@ -106,7 +108,9 @@
                         <ion-input label="Contraseña: " type="password" id="txtPassLogin"></ion-input>
                     </ion-item>
 
-                    <ion-button color="dark">Loguearse</ion-button>
+                    <ion-button color="dark" id="btnIngresar">Loguearse</ion-button>
+
+                    <ion-item><p id="login-msg"></p></ion-item>
                 </ion-list>
             </ion-content>
         </ion-page>
@@ -175,16 +179,45 @@
 
                     <ion-button color="dark" id="btnFiltro">Filtrar</ion-button>
                 </ion-list>
+
+                <ion-list>
+                    <ion-item>
+
+                        <table>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Departamento</th>
+                                <th>Ciudad</th>
+                                <th>Fecha de nacimiento</th>
+                                <th>Ocupacion</th>
+                            </tr>
+                        </table>
+
+                    </ion-item>
+
+                    <ion-item>
+                        Cantidad de censados: 
+                    </ion-item>
+
+                </ion-list>
             </ion-content>
         </ion-page>
 
-        <!--ToDo-->
-        <ion-page id="sec-mapa">
-
+        <ion-page class="ion-page" id="sec-mapa">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                </ion-toolbar>
+               
+            </ion-header>
+            <ion-content>
+            </ion-content>
         </ion-page>
 
     
-    
+         
     
     
     
