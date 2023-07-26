@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
+    <script src="JS/user.js" defer></script>
+    <script src="JS/persona.js" defer></script>
+    <script src="JS/code.js" defer></script>   
+</head>
+<body>
+
+    <ion-app>
+        <ion-router id="ruteo">
+            <ion-route url="/" component="sec-inicio"></ion-route>
+            <ion-route url="/page-two" component="sec-registro"></ion-route>
+            <ion-route url="/page-three" component="sec-login"></ion-route>
+            <ion-route url="/page-four" component="sec-agregarCensado"></ion-route>
+            <ion-route url="/page-five" component="sec-listadoCensados"></ion-route>
+            <ion-route url="/page-six" component="sec-mapa"></ion-route>
+        </ion-router>
+    
+        <ion-nav></ion-nav>
+    
+        <ion-menu side="start" content-id="main-content" id="menu">
+            <ion-header>
+                <ion-toolbar color="primary">
+                  <ion-title>Menu</ion-title>
+                </ion-toolbar>
+              </ion-header>
+            </ion-header>
+            <ion-content class="ion-padding">
+                <ion-list>
+                    <ion-item href="/" onclick="CerrarMenu()">Inicio</ion-item>
+                    <ion-item href="/page-two" onclick="CerrarMenu()">Registrarse</ion-item> 
+                    <ion-item href="/page-three" onclick="CerrarMenu()">Login</ion-item>
+                    <ion-item href="/page-four" onclick="CerrarMenu()">Agregar censado</ion-item>
+                    <ion-item href="/page-five" onclick="CerrarMenu()">Listado de censados</ion-item>
+                    <ion-item href="/page-six" onclick="CerrarMenu()">Mapa</ion-item>               
+                  </ion-list>
+            </ion-content>
+        </ion-menu>
+    
+        <div id="main-content"></div>
+
+        <ion-page class="ion-page" id="sec-inicio">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    Home
+                </ion-toolbar>                
+            </ion-header>
+            <ion-content>
+                <h1>Bienvenido/a</h1> 
+            </ion-content>
+        </ion-page>
+
+        <ion-page class="ion-page" id="sec-registro">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    Registro
+                </ion-toolbar>
+               
+            </ion-header>
+            <ion-content>
+                <h2>Registrarse</h2>
+                <ion-list>
+                    <ion-item>
+                      <ion-input label="Usuario: " id="txtUser"></ion-input>
+                    </ion-item>
+                  
+                    <ion-item>
+                        <ion-input label="Contraseña: " type="password" id="txtPass"></ion-input>
+                    </ion-item>
+
+                    <ion-button color="dark">Registrar usuario</ion-button>
+                </ion-list>
+            </ion-content>
+        </ion-page>
+
+        <ion-page class="ion-page" id="sec-login">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    Login
+                </ion-toolbar>
+            </ion-header>
+
+            <ion-content>
+                <ion-list>
+                    <ion-item>
+                      <ion-input label="Usuario: " id="txtUserLogin"></ion-input>
+                    </ion-item>
+                  
+                    <ion-item>
+                        <ion-input label="Contraseña: " type="password" id="txtPassLogin"></ion-input>
+                    </ion-item>
+
+                    <ion-button color="dark">Loguearse</ion-button>
+                </ion-list>
+            </ion-content>
+        </ion-page>
+
+        <ion-page class="ion-page" id="sec-agregarCensado">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    Agregar censado
+                </ion-toolbar>
+            </ion-header>
+            
+            <ion-content>
+                <ion-list>
+                    <ion-item>
+                      <ion-input label="Nombre: " id="nombrePersona"></ion-input>
+                    </ion-item>
+
+                    <ion-item>
+                        <ion-select label="Departamento" label-placement="floating" id="slcDepartamentos">
+                          <ion-select-option value="default" disabled="true">Departamento</ion-select-option>
+                        </ion-select>
+                    </ion-item>
+
+                    <ion-item>
+                        <ion-select label="Ciudad" label-placement="floating" id="slcCiudades">
+                          <ion-select-option value="default" disabled="true">Ciudad</ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                  
+                    <ion-item>
+                        <ion-input label="Fecha de nacimiento: " id="dateFechaNac"></ion-input>
+                    </ion-item>
+
+                    <ion-item>
+                        <ion-select label="Ocupacion" label-placement="floating" id="slcOcupacion">
+                          <ion-select-option value="default" disabled="true">Ocupacion</ion-select-option>
+                        </ion-select>
+                    </ion-item>
+
+                    <ion-button color="dark" id="btnCensar">Confirmar</ion-button>
+                </ion-list>
+            </ion-content>
+        </ion-page>
+
+        <!--ToDo-->
+        <ion-page class="ion-page" id="sec-listadoCensados">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    Listado de censados
+                </ion-toolbar>
+               
+            </ion-header>
+            <ion-content>
+                <ion-list>
+                    <ion-item>
+                        <ion-select label="Ocupacion" label-placement="floating" id="slcOcupacion">
+                            <ion-select-option value="default" disabled="true">Ocupacion</ion-select-option>
+                        </ion-select>
+                    </ion-item>
+
+                    <ion-button color="dark" id="btnFiltro">Filtrar</ion-button>
+                </ion-list>
+            </ion-content>
+        </ion-page>
+
+        <!--ToDo-->
+        <ion-page id="sec-mapa">
+
+        </ion-page>
+
+    
+    
+    
+    
+    
+    
+    </ion-app>
+
+
+
+
+
+
+
+    <!--
+    <div id="general">
+
+        <header>
+            <section id="menu">
+                <input type="button" value="Inicio" id="navInicio">
+                <input type="button" value="Ingreso" id="navLogin">
+                <input type="button" value="Registro" id="navRegistro">
+                <input type="button" value="Cerrar sesión" id="navCerrarSesion">
+                <input type="button" value="Agregar censado" id="navAgregarPersona">
+                <input type="button" value="Listado de censados" id="navObtenerPersonas">
+                <input type="button" value="Mapa" id="navMostrarMapa">
+            </section>
+        </header>
+
+
+        <section class="seccion" id="sec-inicio" style="display: none;">
+            <h1>Bienvenido/a</h1>
+        </section>
+
+
+        <section class="seccion" id="sec-registro">
+            <h2>Registro</h2>
+            <label for="txtUser">Usuario: </label>
+            <input type="text" id="txtUser" placeholder="Ingrese su usuario"><br>
+
+            <label for="txtPass">Password: </label>
+            <input type="password" id="txtPass" placeholder="Ingrese su password"><br>
+
+            <input type="button" value="Registrar" id="btnRegistrar"><br>
+
+            <p id="registro-msg"></p>
+        </section>
+
+
+        <section class="seccion" id="sec-login">
+            <h2>Login</h2>
+            <label for="txtUserLogin">Usuario: </label>
+            <input type="text" id="txtUserLogin" placeholder="Ingrese su usuario"><br>
+
+            <label for="txtPassLogin">Password: </label>
+            <input type="password" id="txtPassLogin" placeholder="Ingrese su password"><br>
+
+            <input type="button" value="Ingresar" id="btnIngresar"><br>
+
+            <p id="login-msg"></p>
+        </section>
+
+
+        <section class="seccion" id="sec-agregarCensado" style="display: none;">
+            <label for="nombrePersona">Nombre: </label>
+            <input type="text" id="nombrePersona"><br>
+
+            <select id="slcDepartamentos">
+                <option value="-1">Departamento</option>
+            </select><br>
+
+            <select id="slcCiudades">
+                <option value="-1">Ciudad</option>
+            </select><br>
+
+            <label for="dateFechaNac">Fecha de nacimiento: </label>
+            <input type="date" id="dateFechaNac"><br>
+
+            <select id="slcOcupacion">
+                <option value="-1">Ocupacion</option>
+            </select><br>
+
+            <input type="button" value="Confirmar" id="btnCensar"><br>
+
+            <p id="addcensado-msg"></p>
+        </section>
+
+
+        <section class="seccion" id="sec-listadoCensados" style="display: none;">
+            <h2>Personas censadas.</h2>
+
+            <form>
+                <fieldset>
+                    <legend>Filtro por ocupacion</legend>
+                    <select id="slcOcupacion">
+                        <option value="-1">Ocupacion</option>
+                    </select>
+
+                    <input type="button" value="Filtrar" id="btnFiltro">
+                </fieldset>
+            </form>
+
+            <table id="table-censados">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Departamento</th>
+                    <th>Ciudad</th>
+                    <th>Fecha de nacimiento</th>
+                    <th>Ocupacion</th>
+                </tr>
+            </table>
+
+            <article>
+                <p id="censadosTotales"></p>
+            </article>
+        </section>
+
+
+        <section class="seccion" id="sec-mapa" style="display: none;"></section>
+    </div>
+    -->
+
+
+</body>
+</html>
