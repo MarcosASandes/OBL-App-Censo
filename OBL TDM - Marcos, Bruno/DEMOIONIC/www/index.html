@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,8 +10,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
     <script src="JS/user.js" defer></script>
     <script src="JS/persona.js" defer></script>
-    <script src="JS/code.js" defer></script>   
+    <script src="JS/interaccionApi.js" defer></script>
+    <script src="JS/reuse.js" defer></script>
+    <script src="JS/interaccionFE.js" defer></script>
 </head>
+
 <body>
 
     <ion-app>
@@ -22,28 +26,28 @@
             <ion-route url="/page-five" component="sec-listadoCensados"></ion-route>
             <ion-route url="/page-six" component="sec-mapa"></ion-route>
         </ion-router>
-    
+
         <ion-nav></ion-nav>
-    
+
         <ion-menu side="start" content-id="main-content" id="menu">
             <ion-header>
                 <ion-toolbar color="primary">
-                  <ion-title>Menu</ion-title>
+                    <ion-title>Menu</ion-title>
                 </ion-toolbar>
-              </ion-header>
+            </ion-header>
             </ion-header>
             <ion-content class="ion-padding">
                 <ion-list>
                     <ion-item href="/" onclick="CerrarMenu()">Inicio</ion-item>
-                    <ion-item href="/page-two" onclick="CerrarMenu()">Registrarse</ion-item> 
+                    <ion-item href="/page-two" onclick="CerrarMenu()">Registrarse</ion-item>
                     <ion-item href="/page-three" onclick="CerrarMenu()">Login</ion-item>
                     <ion-item href="/page-four" onclick="CerrarMenu()">Agregar censado</ion-item>
                     <ion-item href="/page-five" onclick="CerrarMenu()">Listado de censados</ion-item>
-                    <ion-item href="/page-six" onclick="CerrarMenu()">Mapa</ion-item>               
-                  </ion-list>
+                    <ion-item href="/page-six" onclick="CerrarMenu()">Mapa</ion-item>
+                </ion-list>
             </ion-content>
         </ion-menu>
-    
+
         <div id="main-content"></div>
 
         <ion-page class="ion-page" id="sec-inicio">
@@ -53,10 +57,10 @@
                         <ion-menu-button></ion-menu-button>
                     </ion-buttons>
                     Home
-                </ion-toolbar>                
+                </ion-toolbar>
             </ion-header>
             <ion-content>
-                <h1>Bienvenido/a</h1> 
+                <h1>Bienvenido/a</h1>
             </ion-content>
         </ion-page>
 
@@ -68,22 +72,24 @@
                     </ion-buttons>
                     Registro
                 </ion-toolbar>
-               
+
             </ion-header>
             <ion-content>
                 <h2>Registrarse</h2>
                 <ion-list>
                     <ion-item>
-                      <ion-input label="Usuario: " id="txtUser"></ion-input>
+                        <ion-input label="Usuario: " id="txtUser"></ion-input>
                     </ion-item>
-                  
+
                     <ion-item>
                         <ion-input label="Contraseña: " type="password" id="txtPass"></ion-input>
                     </ion-item>
 
                     <ion-button color="dark" id="btnRegistrar">Registrar usuario</ion-button>
 
-                    <ion-item><p id="registro-msg"></p></ion-item>
+                    <ion-item>
+                        <p id="registro-msg"></p>
+                    </ion-item>
                 </ion-list>
             </ion-content>
         </ion-page>
@@ -101,16 +107,18 @@
             <ion-content>
                 <ion-list>
                     <ion-item>
-                      <ion-input label="Usuario: " id="txtUserLogin"></ion-input>
+                        <ion-input label="Usuario: " id="txtUserLogin"></ion-input>
                     </ion-item>
-                  
+
                     <ion-item>
                         <ion-input label="Contraseña: " type="password" id="txtPassLogin"></ion-input>
                     </ion-item>
 
                     <ion-button color="dark" id="btnIngresar">Loguearse</ion-button>
 
-                    <ion-item><p id="login-msg"></p></ion-item>
+                    <ion-item>
+                        <p id="login-msg"></p>
+                    </ion-item>
                 </ion-list>
             </ion-content>
         </ion-page>
@@ -124,32 +132,32 @@
                     Agregar censado
                 </ion-toolbar>
             </ion-header>
-            
+
             <ion-content>
                 <ion-list>
                     <ion-item>
-                      <ion-input label="Nombre: " id="nombrePersona"></ion-input>
+                        <ion-input label="Nombre: " id="nombrePersona"></ion-input>
                     </ion-item>
 
                     <ion-item>
                         <ion-select label="Departamento" label-placement="floating" id="slcDepartamentos">
-                          <ion-select-option value="default" disabled="true">Departamento</ion-select-option>
+                            <ion-select-option value="default" disabled="true">Departamento</ion-select-option>
                         </ion-select>
                     </ion-item>
 
                     <ion-item>
                         <ion-select label="Ciudad" label-placement="floating" id="slcCiudades">
-                          <ion-select-option value="default" disabled="true">Ciudad</ion-select-option>
+                            <ion-select-option value="default" disabled="true">Ciudad</ion-select-option>
                         </ion-select>
                     </ion-item>
-                  
+
                     <ion-item>
                         <ion-input label="Fecha de nacimiento: " id="dateFechaNac"></ion-input>
                     </ion-item>
 
                     <ion-item>
                         <ion-select label="Ocupacion" label-placement="floating" id="slcOcupacion">
-                          <ion-select-option value="default" disabled="true">Ocupacion</ion-select-option>
+                            <ion-select-option value="default" disabled="true">Ocupacion</ion-select-option>
                         </ion-select>
                     </ion-item>
 
@@ -167,7 +175,7 @@
                     </ion-buttons>
                     Listado de censados
                 </ion-toolbar>
-               
+
             </ion-header>
             <ion-content>
                 <ion-list>
@@ -196,7 +204,7 @@
                     </ion-item>
 
                     <ion-item>
-                        Cantidad de censados: 
+                        Cantidad de censados:
                     </ion-item>
 
                 </ion-list>
@@ -210,18 +218,18 @@
                         <ion-menu-button></ion-menu-button>
                     </ion-buttons>
                 </ion-toolbar>
-               
+
             </ion-header>
             <ion-content>
             </ion-content>
         </ion-page>
 
-    
-         
-    
-    
-    
-    
+
+
+
+
+
+
     </ion-app>
 
 
@@ -340,4 +348,5 @@
 
 
 </body>
+
 </html>
