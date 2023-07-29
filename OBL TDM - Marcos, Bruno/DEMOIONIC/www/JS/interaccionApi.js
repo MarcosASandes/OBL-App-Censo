@@ -1,5 +1,6 @@
 const censoAPI = "https://censo.develotion.com/";
 let hayUsuarioLogueado = false;
+let Token;
 
 //#region REGISTRO /usuarios.php
 function registrarUsuario() {
@@ -81,6 +82,69 @@ function iniciarSesion() {
 }
 //#endregion
 
+//#region GETDEPTOS /departamentos.php //por lo que 
+//tengo entendido hay que pasar el id por parámetro
+function GetDeptos() {
+    fetch(censoAPI + "/departamentos.php", {
+        method: "GET",
+        headers: {
+            content,
+            "x-auth": localStorage.getItem("token"),
+            "iduser": 1054 //TODO ESTO ES PARA PRUEBA
+            //hay que pasar el id
+        }
+    })
+        .then(ConvResp)
+        .then(function (data) {
+            const selectElement = dqs("slcDepartamentos"); // Obtener el elemento <select>
+            selectElement.innerHTML = ""; // Limpiar el contenido previo del <select> si lo hay
+            for (let i = 0; i < data.departamentos.length; i++) {
+                const departamento = data.departamentos[i];
+                const option = document.createElement("option"); // Crear un elemento <option>
+                option.textContent = departamento.nombre; // Establecer el texto de la opción al nombre del departamento
+                option.value = departamento.id; // Opcional: Asignar un valor a la opción (puedes utilizar el ID u otra propiedad)
+    
+                selectElement.appendChild(option); // Agregar la opción al <select>
+            }
+        })
+        .catch(function (error) {
+            dqs("").innerHTML = "Encontrado";
+        })
+        .then(function (datoError) {
+            if (datoError != undefined) {
+                dqs("").innerHTML = "Encontrado";
+            }
+        })
+}
+//#endregion
+
+
+//#region GETCytis /ciudades.php?idDepartamento=3208
+function GetDeptos() {
+    fetch(censoAPI + "/departamentos.php", {
+        method: "GET",
+        headers: {
+            content,
+            "x-auth": localStorage.getItem("token"),
+            "iduser": 1054 //TODO ESTO ES PARA PRUEBA
+        }
+    })
+        .then(ConvResp)
+        .then(function (data) {
+        })
+        .catch(function (error) {
+            dqs("").innerHTML = "Encontrado";
+        })
+        .then(function (datoError) {
+            if (datoError != undefined) {
+                dqs("").innerHTML = "Encontrado";
+            }
+        })
+}
+//#endregion
+
+
+
 //#region AGREGAR CENSO /personas.php
 function AddPers(persona) {
 
@@ -110,7 +174,7 @@ function AddPers(persona) {
                 "ocupacion": Ocup
             })
         })
-            .then(ConvResp(response))
+            .then(ConvResp)
             .then(function (data) {
                 dqs("").innerHTML = "Encontrado";
             })
@@ -138,7 +202,7 @@ function GetPers() {
             "x-auth": localStorage.getItem("token")
         }
     })
-        .then(ConvResp(response))
+        .then(ConvResp)
         .then(function (data) {
             dqs("").innerHTML = "Encontrado";
         })
@@ -165,7 +229,7 @@ function FindByOcup() {
             "x-auth": localStorage.getItem("token")
         }
     })
-        .then(ConvResp(response))
+        .then(ConvResp)
         .then(function (data) {
             dqs("").innerHTML = "Encontrado";
         })
@@ -189,7 +253,7 @@ function FindAllCensa2() {
             "x-auth": localStorage.getItem("token")
         }
     })
-        .then(ConvResp(response))
+        .then(ConvResp)
         .then(function (data) {
             dqs("").innerHTML = "";
         })
