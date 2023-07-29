@@ -187,6 +187,7 @@ function AddPers(persona) {
                 }
             })
     } catch {
+        dqs("sec-login").innerHTML = "Inicie sesion.";
 
     }
 }
