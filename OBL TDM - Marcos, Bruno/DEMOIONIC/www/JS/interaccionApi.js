@@ -23,11 +23,12 @@ function registrarUsuario() {
                     "password": pass
                 })
             })
-            .then(ConvResp(response))
+            .then(ConvResp)
             .then(function (data) {
-                console.log("Error");
+                
                 hayUsuarioLogueado = true;
-                localStorage.setItem("token", data.data.token);
+                localStorage.setItem("token", data.apiKey); // todo gestion de errores
+                document.querySelector("#registro-msg").innerHTML = "vemos";
             })
             .catch(function (Error) {
                 throw Error;

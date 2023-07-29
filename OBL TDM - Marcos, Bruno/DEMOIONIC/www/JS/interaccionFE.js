@@ -57,9 +57,9 @@ if (usConect === false) {
 
 
 
-// function CerrarMenu(){
-//     document.querySelector("#menu").close();
-// }
+function CerrarMenu(){
+    document.querySelector("#menu").close();
+}
 
 
 /*
