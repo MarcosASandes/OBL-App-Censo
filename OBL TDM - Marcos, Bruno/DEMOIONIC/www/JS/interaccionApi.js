@@ -63,10 +63,10 @@ function iniciarSesion() {
             "password": password
         })
     })
-        .then(ConvResp(response))
+        .then(ConvResp) 
         .then(function (data) {
             hayUsuarioLogueado = true;
-            localStorage.setItem("token", data.data.token);
+            localStorage.setItem("token", data.apiKey); // todo gestion de errores
             document.querySelector("#login-msg").innerHTML = "Encontrado";
         })
         .catch(function (error) {
