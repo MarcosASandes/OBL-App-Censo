@@ -26,9 +26,10 @@ function registrarUsuario() {
             })
             .then(ConvResp)
             .then(function (data) {
-                
+
                 hayUsuarioLogueado = true;
                 localStorage.setItem("token", data.apiKey); // todo gestion de errores
+                localStorage.setItem("idus", data.id); // todo gestion de errores
                 document.querySelector("#registro-msg").innerHTML = "vemos";
             })
             .catch(function (Error) {
@@ -64,11 +65,12 @@ function iniciarSesion() {
             "password": password
         })
     })
-        .then(ConvResp) 
+        .then(ConvResp)
         .then(function (data) {
             hayUsuarioLogueado = true;
             localStorage.setItem("token", data.apiKey); // todo gestion de errores
             document.querySelector("#login-msg").innerHTML = "Encontrado";
+            localStorage.setItem("idus", data.id); // todo gestion de errores
         })
         .catch(function (error) {
             document.querySelector("#login-msg").innerHTML = error;
@@ -78,41 +80,41 @@ function iniciarSesion() {
                 document.querySelector("#login-msg").innerHTML = datoError;
             }
         })
-
 }
-//#endregion
+//#endregiond
 
-//#region GETDEPTOS /departamentos.php //por lo que 
-//tengo entendido hay que pasar el id por parámetro
-function GetDeptos() {
+//#region GETDEPTOS /departamentos.php 
+function SetDeptos() {
+    let tok = localStorage.getItem("token");
+    let idu = localStorage.getItem("idus");
+
     fetch(censoAPI + "/departamentos.php", {
         method: "GET",
         headers: {
             content,
-            "x-auth": localStorage.getItem("token"),
-            "iduser": 1054 //TODO ESTO ES PARA PRUEBA
-            //hay que pasar el id
+            "apikey": tok,
+            "iduser": idu // todo gestion de errores, 
         }
     })
         .then(ConvResp)
         .then(function (data) {
-            const selectElement = dqs("slcDepartamentos"); // Obtener el elemento <select>
-            selectElement.innerHTML = ""; // Limpiar el contenido previo del <select> si lo hay
+            const selectElement = document.querySelector("#slcDepartamentos");
+            selectElement.innerHTML = ""; // Limpiar el select
+            console.log("evaluando");
             for (let i = 0; i < data.departamentos.length; i++) {
-                const departamento = data.departamentos[i];
-                const option = document.createElement("option"); // Crear un elemento <option>
-                option.textContent = departamento.nombre; // Establecer el texto de la opción al nombre del departamento
-                option.value = departamento.id; // Opcional: Asignar un valor a la opción (puedes utilizar el ID u otra propiedad)
-    
-                selectElement.appendChild(option); // Agregar la opción al <select>
+                let departamento = data.departamentos[i];
+                const optionElement = document.createElement("ion-select-option");
+                optionElement.value = departamento.id;
+                optionElement.textContent = departamento.nombre;
+                selectElement.appendChild(optionElement);
             }
         })
         .catch(function (error) {
-            dqs("").innerHTML = "Encontrado";
+            //  dqs("").innerHTML = "Encontrado";
         })
         .then(function (datoError) {
             if (datoError != undefined) {
-                dqs("").innerHTML = "Encontrado";
+                // dqs("").innerHTML = "Encontrado";
             }
         })
 }
@@ -267,3 +269,17 @@ function FindAllCensa2() {
         })
 }
 //#endregion
+
+        // if(localStorage.getItem("token"!==null)){
+        //     <nav>
+        //         <input type="button" value="LOGOUT" onClick={Logout}/>
+        //     </nav>//cambiarlo por un route
+        // }else{
+        //     <nav>
+        //         <input type="button" value="LOGOUT" onClick={Logout}/>
+        //         <input type="button" value="LOGOUT" onClick={Logout}/>
+        //     </nav>
+        // }
+        // function Logout(){
+        //     localStorage.clear();
+        // }
