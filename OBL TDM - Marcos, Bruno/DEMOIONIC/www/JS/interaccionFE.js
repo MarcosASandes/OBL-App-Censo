@@ -9,6 +9,42 @@ if (usConect === false) {
 }
 
 
+/*REGION MAPA*/
+//Codigo comentado para ver a futuro, el problema radica en que el mapa aparece en cualquier parte de la pantalla
+//y en cualquier seccion.
+
+//ToDo
+/*
+let latitudeOrigen;
+let longitudeOrigen;
+navigator.geolocation.getCurrentPosition(SetearPosicionDispositivo, MostrarError);
+
+MostrarMapa();
+
+function SetearPosicionDispositivo(position){
+    console.log(position);
+    latitudeOrigen=position.coords.latitude;
+    longitudeOrigen=position.coords.longitude;
+  
+}
+function MostrarError(error){
+    console.log(error);
+}
+
+function MostrarMapa(){
+    if(navigator.geolocation){
+        var map = L.map('sec-mapa').setView([-34.903609710179076, -56.190603059985875], 13);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap'
+}).addTo(map);
+L.marker([-34.903609710179076, -56.190603059985875]).bindPopup("Usted").addTo(map);
+L.marker([latitudeOrigen, longitudeOrigen]).addTo(map);
+    }
+    
+}*/
+
+/*FIN MAPA*/ 
 
 
 
@@ -28,18 +64,6 @@ if (usConect === false) {
 
 
 
-
-
-
-
-// const censoAPI = "https://censo.develotion.com/";
-// let hayUsuarioLogueado = false;
-
-// Inicializar();
-
-// //Implementacion de API apuntes:
-// //Deberiamos llamar a la API y retornar los usuarios, alli comprobar a la hora de registrarse que no haya
-// //un usuario igual, y luego para hacer login debemos buscar en la API la existencia de un usuario con esos datos.
 
 
 
