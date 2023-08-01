@@ -16,4 +16,3 @@ for (let i = 0; i < allcamp.length; i++) {
     allcamp[i].style.display = "none";
 }
 
-let content = `"Content-Type":"application/json"`;

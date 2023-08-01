@@ -26,7 +26,6 @@ function registrarUsuario() {
             })
             .then(ConvResp)
             .then(function (data) {
-
                 hayUsuarioLogueado = true;
                 localStorage.setItem("token", data.apiKey); // todo gestion de errores
                 localStorage.setItem("idus", data.id); // todo gestion de errores
@@ -41,16 +40,13 @@ function registrarUsuario() {
     }
 }
 //#endregion
-/*
-localStorage.setItem("token", "token")
-*/
 
-//#region LOGIN /login.php?&
 
 function logout() {
     localStorage.clear();
 }
 
+//#region LOGIN /login.php?&
 
 function iniciarSesion() {
     let nombreUsuario = dqs("#txtUserLogin").value;
@@ -83,7 +79,7 @@ function iniciarSesion() {
 }
 //#endregiond
 
-//#region GETDEPTOS /departamentos.php 
+//#region SETDEPTOS /departamentos.php 
 function SetDeptos() {
     let tok = localStorage.getItem("token");
     let idu = localStorage.getItem("idus");
@@ -91,7 +87,7 @@ function SetDeptos() {
     fetch(censoAPI + "/departamentos.php", {
         method: "GET",
         headers: {
-            content,
+            "Content-Type": "application/json",
             "apikey": tok,
             "iduser": idu // todo gestion de errores, 
         }
@@ -99,8 +95,7 @@ function SetDeptos() {
         .then(ConvResp)
         .then(function (data) {
             const selectElement = document.querySelector("#slcDepartamentos");
-            selectElement.innerHTML = ""; // Limpiar el select
-            console.log("evaluando");
+            selectElement.innerHTML = ""; // Limpiar el select            
             for (let i = 0; i < data.departamentos.length; i++) {
                 let departamento = data.departamentos[i];
                 const optionElement = document.createElement("ion-select-option");
@@ -120,19 +115,33 @@ function SetDeptos() {
 }
 //#endregion
 
-
+dqs("#slcDepartamentos").addEventListener("ionChange", GetCitys);
 //#region GETCytis /ciudades.php?idDepartamento=3208
-function GetDeptos() {
-    fetch(censoAPI + "/departamentos.php", {
+function GetCitys() {
+    let tok = localStorage.getItem("token");
+    let idu = localStorage.getItem("idus");
+    const slcDepartamentos = document.getElementById("#slcDepartamentos");
+    const slcCiudades = document.getElementById("#slcCiudades");
+    const selectedDepartamentoId = slcDepartamentos.value;
+
+    fetch(censoAPI + `/ciudades.php?idDepartamento=${selectedDepartamentoId}`, {
         method: "GET",
         headers: {
-            content,
-            "x-auth": localStorage.getItem("token"),
-            "iduser": 1054 //TODO ESTO ES PARA PRUEBA
+            "Content-Type": "application/json",
+            "apikey": tok,
+            "iduser": idu
         }
     })
         .then(ConvResp)
         .then(function (data) {
+            
+            for (let i = 0; i < data.ciudades.length; i++) {
+                const ciudad = data.ciudades[i];
+                const optionElement = document.createElement("ion-select-option");
+                optionElement.value = ciudad.id;
+                optionElement.textContent = ciudad.nombre;
+                slcCiudades.appendChild(optionElement);
+            }
         })
         .catch(function (error) {
             dqs("").innerHTML = "Encontrado";
@@ -164,8 +173,8 @@ function AddPers(persona) {
         fetch(censoAPI + "/personas.php", {
             method: "POST",
             Headers: {
-                content,
-                "x-auth": localStorage.getItem("token")
+                "Content-Type": "application/json",
+                "apikey": localStorage.getItem("token")
             },
             body: JSON.stringify({
                 "idUsuario": 6,
@@ -201,8 +210,8 @@ function GetPers() {
     fetch(censoAPI + "/personas.php?idUsuario=6", {
         method: "GET",
         headers: {
-            content,
-            "x-auth": localStorage.getItem("token")
+            "Content-Type": "application/json",
+            "apikey": localStorage.getItem("token")
         }
     })
         .then(ConvResp)
@@ -228,8 +237,8 @@ function FindByOcup() {
     fetch(censoAPI + "/ocupaciones.php", {
         method: "GET",
         headers: {
-            content,
-            "x-auth": localStorage.getItem("token")
+            "Content-Type": "application/json",
+            "apikey": localStorage.getItem("token")
         }
     })
         .then(ConvResp)
@@ -252,8 +261,8 @@ function FindAllCensa2() {
     fetch(censoAPI + "/totalCensados.php", {
         method: "GET",
         headers: {
-            content,
-            "x-auth": localStorage.getItem("token")
+            "Content-Type": "application/json",
+            "apikey": localStorage.getItem("token")
         }
     })
         .then(ConvResp)

@@ -40,15 +40,15 @@
                 <ion-toolbar color="primary">
                     <ion-title>Menu</ion-title>
                 </ion-toolbar>
-                <ion-button><input type="button" onclick="logout()" value="Logout" /></ion-button>
+                <ion-button onclick="logout()">Logout</ion-button>
             </ion-header>
             </ion-header>
             <ion-content class="ion-padding">
                 <ion-list>
                     <ion-item href="/" onclick="CerrarMenu()">Inicio</ion-item>
                     <ion-item href="/page-two" onclick="CerrarMenu()">Registrarse</ion-item>
-                    <ion-item href="/page-three" onclick="CerrarMenu()">Login</ion-item> 
-                    <ion-item href="/page-four" onclick="CerrarMenu(); SetDeptos();">Agregar censado</ion-item>
+                    <ion-item href="/page-three" onclick="CerrarMenu()">Login</ion-item>
+                    <ion-item href="/page-four" onclick="CerrarMenu();">Agregar censado</ion-item>
                     <ion-item href="/page-five" onclick="CerrarMenu()">Listado de censados</ion-item>
                     <ion-item href="/page-six" onclick="CerrarMenu()">Mapa</ion-item>
                 </ion-list>
@@ -147,7 +147,7 @@
                         <ion-input label="Nombre: " id="nombrePersona"></ion-input>
                     </ion-item>
 
-                    <ion-item>
+                    <ion-item onclick="SetDeptos();">
                         <ion-select label="Departamento" label-placement="floating" id="slcDepartamentos">
                             <ion-select-option value="default" disabled={true}>Departamento</ion-select-option>
                         </ion-select>
@@ -198,11 +198,11 @@
 
                 <ion-grid fixed="true">
                     <ion-row>
-                      <ion-col>Nombre</ion-col>
-                      <ion-col>Departamento</ion-col>
-                      <ion-col>Ciudad</ion-col>
-                      <ion-col>Fecha de nacimiento</ion-col>
-                      <ion-col>Ocupacion</ion-col>
+                        <ion-col>Nombre</ion-col>
+                        <ion-col>Departamento</ion-col>
+                        <ion-col>Ciudad</ion-col>
+                        <ion-col>Fecha de nacimiento</ion-col>
+                        <ion-col>Ocupacion</ion-col>
                     </ion-row>
                 </ion-grid>
             </ion-content>
@@ -222,7 +222,9 @@
         </ion-page>
 
         <style>
-            #sec-mapa { height: 180px; }
+            #sec-mapa {
+                height: 180px;
+            }
         </style>
 
 
