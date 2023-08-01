@@ -120,9 +120,9 @@ dqs("#slcDepartamentos").addEventListener("ionChange", GetCitys);
 function GetCitys() {
     let tok = localStorage.getItem("token");
     let idu = localStorage.getItem("idus");
-    const slcDepartamentos = document.getElementById("#slcDepartamentos");
+    const slcDepartamentos = dqs("#slcDepartamentos").value;
     const slcCiudades = document.getElementById("#slcCiudades");
-    const selectedDepartamentoId = slcDepartamentos.value;
+    const selectedDepartamentoId = slcDepartamentos;
 
     fetch(censoAPI + `/ciudades.php?idDepartamento=${selectedDepartamentoId}`, {
         method: "GET",
@@ -144,11 +144,11 @@ function GetCitys() {
             }
         })
         .catch(function (error) {
-            dqs("").innerHTML = "Encontrado";
+          //  dqs("").innerHTML = "Encontrado";
         })
         .then(function (datoError) {
             if (datoError != undefined) {
-                dqs("").innerHTML = "Encontrado";
+               // dqs("").innerHTML = "Encontrado";
             }
         })
 }
