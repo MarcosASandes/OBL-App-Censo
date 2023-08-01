@@ -1,5 +1,4 @@
 const censoAPI = "https://censo.develotion.com/";
-let hayUsuarioLogueado = false;
 let Token;
 
 //#region REGISTRO /usuarios.php
@@ -26,7 +25,6 @@ function registrarUsuario() {
             })
             .then(ConvResp)
             .then(function (data) {
-                hayUsuarioLogueado = true;
                 localStorage.setItem("token", data.apiKey); // todo gestion de errores
                 localStorage.setItem("idus", data.id); // todo gestion de errores
                 document.querySelector("#registro-msg").innerHTML = "vemos";
@@ -63,7 +61,6 @@ function iniciarSesion() {
     })
         .then(ConvResp)
         .then(function (data) {
-            hayUsuarioLogueado = true;
             localStorage.setItem("token", data.apiKey); // todo gestion de errores
             document.querySelector("#login-msg").innerHTML = "Encontrado";
             localStorage.setItem("idus", data.id); // todo gestion de errores
@@ -131,13 +128,7 @@ function GetCitys() {
             "iduser": idu
         }
     })
-        .then(function (response) {
-            if (response.ok) {
-                return response.json();
-            } else {
-                return Promise.reject(response);
-            }
-        })
+        .then(ConvResp)
         .then(function (data) {
             console.log("llego");
             if (data.ciudades.length <= 0) {
@@ -165,32 +156,77 @@ function GetCitys() {
 }
 //#endregion
 
+//#region /ocupaciones.php
 
+function GetOcups() {
+    let tok = localStorage.getItem("token");
+    let idu = localStorage.getItem("idus");
+    const slcoCUP = document.querySelector("#slcOcupacion");
+
+    fetch(censoAPI + "/ocupaciones.php", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "apikey": tok,
+            "iduser": idu
+        }
+    })
+        .then(ConvResp)
+        .then(function (data) {
+            console.log("llego");
+            if (data.ocupaciones.length <= 0) {
+                console.log(data.ocupaciones);
+            } else {
+                console.log(data.ocupaciones);
+                for (let i = 0; i < data.ocupaciones.length; i++) {
+                    const ocupacion = data.ocupaciones[i];
+                    const optionElement = document.createElement("ion-select-option");
+                    optionElement.value = ocupacion.id;
+                    optionElement.textContent = ocupacion.ocupacion;
+                    slcoCUP.appendChild(optionElement);
+                }
+            }
+        })
+        .catch(function (error) {
+            //  dqs("").innerHTML = "Encontrado";
+            console.log(Error);
+        })
+        .then(function (datoError) {
+            if (datoError != undefined) {
+
+            }
+        })
+}
+
+//#endregion
 
 //#region AGREGAR CENSO /personas.php
-function AddPers(persona) {
-
+function AddPers() {
+    let tok = localStorage.getItem("token");
+    let idu = localStorage.getItem("idus");
     //ID PERSONA
     try {
-        if (!hayUsuarioLogueado) {
+        if (localStorage.getItem("token")===null) {
             ruteo.push("/");
             throw new Error("No estas logueado"); //se tiene que cargar en el párrafo de inicio de sesion
         }
-        let name = dqs().value;
-        let dpt = dqs().value;
-        let city = dqs().value;
-        let fchNac = dqs().value;
-        let Ocup = dqs().value;
+        let name = dqs("#nombrePersona").value;
+        let dpto = dqs("#slcDepartamentos").value;
+        let city = dqs("#slcCiudades").value;
+        let fchNac = dqs("#dateFechaNac").value;
+        let Ocup = dqs("#slcOcupacion").value;
+        console.log(tok);
         fetch(censoAPI + "/personas.php", {
             method: "POST",
             Headers: {
                 "Content-Type": "application/json",
-                "apikey": localStorage.getItem("token")
+                "apikey": tok,
+                "iduser": idu
             },
             body: JSON.stringify({
-                "idUsuario": 6,
+                "idUsuario": idu,
                 "nombre": name,
-                "departamento": dpt,
+                "departamento": dpto,
                 "ciudad": city,
                 "fechaNacimiento": fchNac,
                 "ocupacion": Ocup
@@ -198,19 +234,21 @@ function AddPers(persona) {
         })
             .then(ConvResp)
             .then(function (data) {
-                dqs("").innerHTML = "Encontrado";
+                console.log("llegue");
+                // dqs("").innerHTML = "Encontrado";
             })
             .catch(function (error) {
-                dqs("").innerHTML = "Encontrado";
+                console.log("llegue1");
+               // dqs("").innerHTML = "Encontrado";
             })
             .then(function (datoError) {
                 if (datoError != undefined) {
-                    dqs("").innerHTML = "Encontrado";
+//dqs("").innerHTML = "Encontrado";
                 }
             })
     } catch {
-        dqs("sec-login").innerHTML = "Inicie sesion.";
-
+     //   dqs("sec-login").innerHTML = "Inicie sesion.";
+        console.log("algo anda mal");
     }
 }
 //#endregion

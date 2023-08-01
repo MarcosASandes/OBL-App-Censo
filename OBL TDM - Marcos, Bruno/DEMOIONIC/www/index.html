@@ -160,16 +160,16 @@
                     </ion-item>
 
                     <ion-item>
-                        <ion-input label="Fecha de nacimiento: " id="dateFechaNac"></ion-input>
+                        <ion-input type="date" label="Fecha de nacimiento: " id="dateFechaNac"></ion-input>
                     </ion-item>
 
-                    <ion-item>
+                    <ion-item onclick="GetOcups()">
                         <ion-select label="Ocupacion" label-placement="floating" id="slcOcupacion">
                             <ion-select-option value="default" disabled="true">Ocupacion</ion-select-option>
                         </ion-select>
                     </ion-item>
 
-                    <ion-button color="dark" id="btnCensar">Confirmar</ion-button>
+                    <ion-button color="dark" id="btnCensar" onclick="AddPers()">Confirmar</ion-button>
                 </ion-list>
             </ion-content>
         </ion-page>
