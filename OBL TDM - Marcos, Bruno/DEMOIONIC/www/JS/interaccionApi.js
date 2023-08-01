@@ -121,10 +121,9 @@ function GetCitys() {
     let tok = localStorage.getItem("token");
     let idu = localStorage.getItem("idus");
     const slcDepartamentos = dqs("#slcDepartamentos").value;
-    const slcCiudades = document.getElementById("#slcCiudades");
-    const selectedDepartamentoId = slcDepartamentos;
+    const slcCiudades = document.querySelector("#slcCiudades");
 
-    fetch(censoAPI + `/ciudades.php?idDepartamento=${selectedDepartamentoId}`, {
+    fetch(censoAPI + `/ciudades.php?idDepartamento=${slcDepartamentos}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -132,23 +131,35 @@ function GetCitys() {
             "iduser": idu
         }
     })
-        .then(ConvResp)
+        .then(function (response) {
+            if (response.ok) {
+                return response.json();
+            } else {
+                return Promise.reject(response);
+            }
+        })
         .then(function (data) {
-            
-            for (let i = 0; i < data.ciudades.length; i++) {
-                const ciudad = data.ciudades[i];
-                const optionElement = document.createElement("ion-select-option");
-                optionElement.value = ciudad.id;
-                optionElement.textContent = ciudad.nombre;
-                slcCiudades.appendChild(optionElement);
+            console.log("llego");
+            if (data.ciudades.length <= 0) {
+                console.log(data.ciudades);
+            } else {
+                console.log(data.ciudades);
+                for (let i = 0; i < data.ciudades.length; i++) {
+                    const ciudad = data.ciudades[i];
+                    const optionElement = document.createElement("ion-select-option");
+                    optionElement.value = ciudad.id;
+                    optionElement.textContent = ciudad.nombre;
+                    slcCiudades.appendChild(optionElement);
+                }
             }
         })
         .catch(function (error) {
-          //  dqs("").innerHTML = "Encontrado";
+            //  dqs("").innerHTML = "Encontrado";
+            console.log(Error);
         })
         .then(function (datoError) {
             if (datoError != undefined) {
-               // dqs("").innerHTML = "Encontrado";
+                // dqs("").innerHTML = "Encontrado";
             }
         })
 }
