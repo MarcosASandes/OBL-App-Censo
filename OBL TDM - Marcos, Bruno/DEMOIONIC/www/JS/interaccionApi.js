@@ -1,5 +1,6 @@
 const censoAPI = "https://censo.develotion.com/";
 let Token;
+let personasArray = [];
 
 //#region REGISTRO /usuarios.php
 function registrarUsuario() {
@@ -136,7 +137,7 @@ function GetCitys() {
             if (data.ciudades.length <= 0) {//tirar error
             } else {
                 console.log(data.ciudades);
-                slcCiudades.innerHTML="";
+                slcCiudades.innerHTML = "";
                 for (let i = 0; i < data.ciudades.length; i++) {
                     const ciudad = data.ciudades[i];
                     const optionElement = document.createElement("ion-select-option");
@@ -180,14 +181,14 @@ function GetOcups() {
                 console.log(data.ocupaciones);
             } else {
                 console.log(data.ocupaciones);
-                for (let i = 0; i < data.ocupaciones.length ; i++) {
+                for (let i = 0; i < data.ocupaciones.length; i++) {
                     let ocupacion = data.ocupaciones[i];
                     let optionElement = document.createElement("ion-select-option");
                     optionElement.value = ocupacion.id;
                     optionElement.textContent = ocupacion.ocupacion;
                     slcoCUP.appendChild(optionElement);
                     slcoCUP2.appendChild(optionElement.cloneNode(true));
-                    //console.log(optionElement2.value);  
+                    console.log(optionElement.value);
                 }
             }
         })
@@ -228,7 +229,7 @@ function AddPers() {
         body: JSON.stringify({
             "idUsuario": idu,
             "nombre": name,
-            "departamento": dpto,   
+            "departamento": dpto,
             "ciudad": city,
             "fechaNacimiento": fchNac,
             "ocupacion": Ocup
@@ -246,7 +247,6 @@ function AddPers() {
 //#endregion
 
 //#region GET PERSONAS /personas.php?idUsuario=6 
-//{encargar el id extraido del usuario}
 function GetPers() {
     let tok = localStorage.getItem("token");
     let idu = localStorage.getItem("idus");
@@ -260,16 +260,18 @@ function GetPers() {
     })
         .then(ConvResp)
         .then(function (data) {
-            FiltroByOcup(data.personas);
-            //dqs("").innerHTML = "Encontrado";
+            personasArray = data.personas;
+            console.log("tabien")
+            recargarPersonas();
         })
         .catch(function (error) {
-            
+            console.log("tamal")
+
             //dqs("").innerHTML = "Encontrado";
         })
         .then(function (datoError) {
             if (datoError != undefined) {
-                
+
                 //dqs("").innerHTML = "Encontrado";
             }
         })
@@ -327,24 +329,81 @@ function FindAllCensa2() {
 }
 //#endregion
 
-        // if(localStorage.getItem("token"!==null)){
-        //     <nav>
-        //         <input type="button" value="LOGOUT" onClick={Logout}/>
-        //     </nav>//cambiarlo por un route
-        // }else{
-        //     <nav>
-        //         <input type="button" value="LOGOUT" onClick={Logout}/>
-        //         <input type="button" value="LOGOUT" onClick={Logout}/>
-        //     </nav>
-        // }
-        // function Logout(){
-        //     localStorage.clear();
-        // }
 
-
-function FiltroByOcup(pers){
+function FiltroByOcup() {
+    alert("")
     let Ocup = dqs("#slcOcupacion2").value;
-    if(pers.ocupacion === Ocup){
+    const gridContainer = document.querySelector("#gridcont");
+
+    gridContainer.innerHTML = "";
+    for (let i = 0; i < personasArray.length; i++) {
+        const persona = personasArray[i]; // Accedemos a la persona actual en el bucle
+
+        if (persona.ocupacion === Ocup) {
+            const newRow = document.createElement("ion-row");
+
+            const nombreCol = document.createElement("ion-col");
+            nombreCol.textContent = persona.nombre;
+
+            const departamentoCol = document.createElement("ion-col");
+            departamentoCol.textContent = persona.departamento;
+
+            const ciudadCol = document.createElement("ion-col");
+            ciudadCol.textContent = persona.ciudad;
+
+            const fechaNacimientoCol = document.createElement("ion-col");
+            fechaNacimientoCol.textContent = persona.fechaNacimiento;
+
+            const ocupacionCol = document.createElement("ion-col");
+            ocupacionCol.textContent = persona.ocupacion;
+
+            // Agregamos las celdas a la fila
+            newRow.appendChild(nombreCol);
+            newRow.appendChild(departamentoCol);
+            newRow.appendChild(ciudadCol);
+            newRow.appendChild(fechaNacimientoCol);
+            newRow.appendChild(ocupacionCol);
+
+            // Agregamos la fila al grid
+            gridContainer.appendChild(newRow);
+        }
+    }
+    // if (personasArray.ocupacion === Ocup) {
+
+    //     }
+}
+
+function recargarPersonas() {
+    const gridContainer = document.querySelector("#gridcont");
+    gridContainer.innerHTML = "";
+    for (let i = 0; i < personasArray.length; i++) {
+        const persona = personasArray[i]; // Accedemos a la persona actual en el bucle
+
+        const newRow = document.createElement("ion-row");
+
+        const nombreCol = document.createElement("ion-col");
+        nombreCol.textContent = persona.nombre;
+
+        const departamentoCol = document.createElement("ion-col");
+        departamentoCol.textContent = persona.departamento;
+
+        const ciudadCol = document.createElement("ion-col");
+        ciudadCol.textContent = persona.ciudad;
+
+        const fechaNacimientoCol = document.createElement("ion-col");
+        fechaNacimientoCol.textContent = persona.fechaNacimiento;
+
+        const ocupacionCol = document.createElement("ion-col");
+        ocupacionCol.textContent = persona.ocupacion;
+
+        newRow.appendChild(nombreCol);
+        newRow.appendChild(departamentoCol);
+        newRow.appendChild(ciudadCol);
+        newRow.appendChild(fechaNacimientoCol);
+        newRow.appendChild(ocupacionCol);
+
+        // Agregamos la fila al grid
+        gridContainer.appendChild(newRow);
 
     }
 }

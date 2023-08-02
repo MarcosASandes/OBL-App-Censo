@@ -49,7 +49,7 @@
                     <ion-item href="/page-two" onclick="CerrarMenu()">Registrarse</ion-item>
                     <ion-item href="/page-three" onclick="CerrarMenu()">Login</ion-item>
                     <ion-item href="/page-four" onclick="CerrarMenu();">Agregar censado</ion-item>
-                    <ion-item href="/page-five" onclick="CerrarMenu()">Listado de censados</ion-item>
+                    <ion-item href="/page-five" onclick="CerrarMenu(); GetPers(); ">Listado de censados</ion-item>
                     <ion-item href="/page-six" onclick="CerrarMenu()">Mapa</ion-item>
                 </ion-list>
             </ion-content>
@@ -193,10 +193,10 @@
                         </ion-select>
                     </ion-item>
 
-                    <ion-button color="dark" id="btnFiltro">Filtrar</ion-button>
+                    <ion-button color="dark" id="btnFiltro" onclick="FiltroByOcup()">Filtrar</ion-button>
                 </ion-list>
 
-                <ion-grid fixed="true">
+                <ion-grid fixed="true" id="gridcont" >
                     <ion-row>
                         <ion-col>Nombre</ion-col>
                         <ion-col>Departamento</ion-col>
