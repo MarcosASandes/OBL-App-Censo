@@ -28,6 +28,7 @@ function registrarUsuario() {
                 localStorage.setItem("token", data.apiKey); // todo gestion de errores
                 localStorage.setItem("idus", data.id); // todo gestion de errores
                 document.querySelector("#registro-msg").innerHTML = "vemos";
+                GetOcups();
             })
             .catch(function (Error) {
                 throw Error;
@@ -64,6 +65,7 @@ function iniciarSesion() {
             localStorage.setItem("token", data.apiKey); // todo gestion de errores
             document.querySelector("#login-msg").innerHTML = "Encontrado";
             localStorage.setItem("idus", data.id); // todo gestion de errores
+            GetOcups();
         })
         .catch(function (error) {
             document.querySelector("#login-msg").innerHTML = error;
@@ -131,10 +133,10 @@ function GetCitys() {
         .then(ConvResp)
         .then(function (data) {
             console.log("llego");
-            if (data.ciudades.length <= 0) {
-                console.log(data.ciudades);
+            if (data.ciudades.length <= 0) {//tirar error
             } else {
                 console.log(data.ciudades);
+                slcCiudades.innerHTML="";
                 for (let i = 0; i < data.ciudades.length; i++) {
                     const ciudad = data.ciudades[i];
                     const optionElement = document.createElement("ion-select-option");
@@ -162,7 +164,7 @@ function GetOcups() {
     let tok = localStorage.getItem("token");
     let idu = localStorage.getItem("idus");
     const slcoCUP = document.querySelector("#slcOcupacion");
-
+    const slcoCUP2 = document.querySelector("#slcOcupacion2");
     fetch(censoAPI + "/ocupaciones.php", {
         method: "GET",
         headers: {
@@ -178,12 +180,14 @@ function GetOcups() {
                 console.log(data.ocupaciones);
             } else {
                 console.log(data.ocupaciones);
-                for (let i = 0; i < data.ocupaciones.length; i++) {
-                    const ocupacion = data.ocupaciones[i];
-                    const optionElement = document.createElement("ion-select-option");
+                for (let i = 0; i < data.ocupaciones.length ; i++) {
+                    let ocupacion = data.ocupaciones[i];
+                    let optionElement = document.createElement("ion-select-option");
                     optionElement.value = ocupacion.id;
                     optionElement.textContent = ocupacion.ocupacion;
                     slcoCUP.appendChild(optionElement);
+                    slcoCUP2.appendChild(optionElement.cloneNode(true));
+                    //console.log(optionElement2.value);  
                 }
             }
         })
@@ -193,7 +197,6 @@ function GetOcups() {
         })
         .then(function (datoError) {
             if (datoError != undefined) {
-
             }
         })
 }
@@ -205,74 +208,69 @@ function AddPers() {
     let tok = localStorage.getItem("token");
     let idu = localStorage.getItem("idus");
     //ID PERSONA
-    try {
-        if (localStorage.getItem("token")===null) {
-            ruteo.push("/");
-            throw new Error("No estas logueado"); //se tiene que cargar en el párrafo de inicio de sesion
-        }
-        let name = dqs("#nombrePersona").value;
-        let dpto = dqs("#slcDepartamentos").value;
-        let city = dqs("#slcCiudades").value;
-        let fchNac = dqs("#dateFechaNac").value;
-        let Ocup = dqs("#slcOcupacion").value;
-        console.log(tok);
-        fetch(censoAPI + "/personas.php", {
-            method: "POST",
-            Headers: {
-                "Content-Type": "application/json",
-                "apikey": tok,
-                "iduser": idu
-            },
-            body: JSON.stringify({
-                "idUsuario": idu,
-                "nombre": name,
-                "departamento": dpto,
-                "ciudad": city,
-                "fechaNacimiento": fchNac,
-                "ocupacion": Ocup
-            })
-        })
-            .then(ConvResp)
-            .then(function (data) {
-                console.log("llegue");
-                // dqs("").innerHTML = "Encontrado";
-            })
-            .catch(function (error) {
-                console.log("llegue1");
-               // dqs("").innerHTML = "Encontrado";
-            })
-            .then(function (datoError) {
-                if (datoError != undefined) {
-//dqs("").innerHTML = "Encontrado";
-                }
-            })
-    } catch {
-     //   dqs("sec-login").innerHTML = "Inicie sesion.";
-        console.log("algo anda mal");
+
+    if (localStorage.getItem("token") === null) {
+        ruteo.push("/");
+        throw new Error("No estas logueado"); //se tiene que cargar en el párrafo de inicio de sesion
     }
+    let name = dqs("#nombrePersona").value;
+    let dpto = dqs("#slcDepartamentos").value;
+    let city = dqs("#slcCiudades").value;
+    let fchNac = dqs("#dateFechaNac").value;
+    let Ocup = dqs("#slcOcupacion").value;
+    fetch(censoAPI + "/personas.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "apikey": tok,
+            "iduser": idu
+        },
+        body: JSON.stringify({
+            "idUsuario": idu,
+            "nombre": name,
+            "departamento": dpto,   
+            "ciudad": city,
+            "fechaNacimiento": fchNac,
+            "ocupacion": Ocup
+        })
+    })
+        .then(ConvResp)
+        .then(function (data) {
+            // dqs("").innerHTML = "Encontrado";
+        })
+        .catch(function (error) {
+            // dqs("").innerHTML = "Encontrado";
+        })
+
 }
 //#endregion
 
 //#region GET PERSONAS /personas.php?idUsuario=6 
 //{encargar el id extraido del usuario}
 function GetPers() {
-    fetch(censoAPI + "/personas.php?idUsuario=6", {
+    let tok = localStorage.getItem("token");
+    let idu = localStorage.getItem("idus");
+    fetch(censoAPI + "/personas.php?idUsuario=" + `${idu}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "apikey": localStorage.getItem("token")
+            "apikey": tok,
+            "iduser": idu
         }
     })
         .then(ConvResp)
         .then(function (data) {
-            dqs("").innerHTML = "Encontrado";
+            FiltroByOcup(data.personas);
+            //dqs("").innerHTML = "Encontrado";
         })
         .catch(function (error) {
-            dqs("").innerHTML = "Encontrado";
+            
+            //dqs("").innerHTML = "Encontrado";
         })
         .then(function (datoError) {
             if (datoError != undefined) {
-                dqs("").innerHTML = "Encontrado";
+                
+                //dqs("").innerHTML = "Encontrado";
             }
         })
 }
@@ -342,3 +340,11 @@ function FindAllCensa2() {
         // function Logout(){
         //     localStorage.clear();
         // }
+
+
+function FiltroByOcup(pers){
+    let Ocup = dqs("#slcOcupacion2").value;
+    if(pers.ocupacion === Ocup){
+
+    }
+}

@@ -44,7 +44,7 @@ L.marker([latitudeOrigen, longitudeOrigen]).addTo(map);
     
 }*/
 
-/*FIN MAPA*/ 
+/*FIN MAPA*/
 
 
 
@@ -81,7 +81,7 @@ L.marker([latitudeOrigen, longitudeOrigen]).addTo(map);
 
 
 
-function CerrarMenu(){
+function CerrarMenu() {
     document.querySelector("#menu").close();
 }
 
@@ -128,58 +128,58 @@ function mostrarNav(){
 
 
 
-document.querySelector("#ruteo").addEventListener("ionRouteWillChange",mostrarPagina);
+document.querySelector("#ruteo").addEventListener("ionRouteWillChange", mostrarPagina);
 document.querySelector("#btnRegistrar").addEventListener("click", registrarUsuario);
 document.querySelector("#btnIngresar").addEventListener("click", iniciarSesion);
 
-function mostrarPagina(evento){
-    console.log(evento);
-    if(evento.detail.to=="/"){
-        document.querySelector("#sec-inicio").style.display="block";
-        document.querySelector("#sec-registro").style.display="none";
-        document.querySelector("#sec-login").style.display="none";
-        document.querySelector("#sec-agregarCensado").style.display="none";
-        document.querySelector("#sec-listadoCensados").style.display="none";
-        document.querySelector("#sec-mapa").style.display="none";
+function mostrarPagina(evento) {
+    if (evento.detail.to == "/") {
+        document.querySelector("#sec-inicio").style.display = "block";
+        document.querySelector("#sec-registro").style.display = "none";
+        document.querySelector("#sec-login").style.display = "none";
+        document.querySelector("#sec-agregarCensado").style.display = "none";
+        document.querySelector("#sec-listadoCensados").style.display = "none";
+        document.querySelector("#sec-mapa").style.display = "none";
     }
-    else if(evento.detail.to =="/page-two"){
-        document.querySelector("#sec-registro").style.display="block";
-        document.querySelector("#sec-inicio").style.display="none";
-        document.querySelector("#sec-login").style.display="none";
-        document.querySelector("#sec-agregarCensado").style.display="none";
-        document.querySelector("#sec-listadoCensados").style.display="none";
-        document.querySelector("#sec-mapa").style.display="none";
+    else if (evento.detail.to == "/page-two") {
+        document.querySelector("#sec-registro").style.display = "block";
+        document.querySelector("#sec-inicio").style.display = "none";
+        document.querySelector("#sec-login").style.display = "none";
+        document.querySelector("#sec-agregarCensado").style.display = "none";
+        document.querySelector("#sec-listadoCensados").style.display = "none";
+        document.querySelector("#sec-mapa").style.display = "none";
     }
-    else if(evento.detail.to =="/page-three"){
-        document.querySelector("#sec-login").style.display="block";
-        document.querySelector("#sec-registro").style.display="none";
-        document.querySelector("#sec-inicio").style.display="none";
-        document.querySelector("#sec-agregarCensado").style.display="none";
-        document.querySelector("#sec-listadoCensados").style.display="none";
-        document.querySelector("#sec-mapa").style.display="none";
+    else if (evento.detail.to == "/page-three") {
+        document.querySelector("#sec-login").style.display = "block";
+        document.querySelector("#sec-registro").style.display = "none";
+        document.querySelector("#sec-inicio").style.display = "none";
+        document.querySelector("#sec-agregarCensado").style.display = "none";
+        document.querySelector("#sec-listadoCensados").style.display = "none";
+        document.querySelector("#sec-mapa").style.display = "none";
     }
-    else if(evento.detail.to =="/page-four"){
-        document.querySelector("#sec-agregarCensado").style.display="block";
-        document.querySelector("#sec-login").style.display="none";
-        document.querySelector("#sec-registro").style.display="none";
-        document.querySelector("#sec-inicio").style.display="none";
-        document.querySelector("#sec-listadoCensados").style.display="none";
-        document.querySelector("#sec-mapa").style.display="none";
+    else if (evento.detail.to == "/page-four") {
+        document.querySelector("#sec-agregarCensado").style.display = "block";
+        document.querySelector("#sec-login").style.display = "none";
+        document.querySelector("#sec-registro").style.display = "none";
+        document.querySelector("#sec-inicio").style.display = "none";
+        document.querySelector("#sec-listadoCensados").style.display = "none";
+        document.querySelector("#sec-mapa").style.display = "none";
     }
-    else if(evento.detail.to =="/page-five"){
-        document.querySelector("#sec-listadoCensados").style.display="block";
-        document.querySelector("#sec-agregarCensado").style.display="none";
-        document.querySelector("#sec-login").style.display="none";
-        document.querySelector("#sec-registro").style.display="none";
-        document.querySelector("#sec-inicio").style.display="none";
-        document.querySelector("#sec-mapa").style.display="none";
+    else if (evento.detail.to == "/page-five") {
+        document.querySelector("#sec-listadoCensados").style.display = "block";
+        document.querySelector("#sec-agregarCensado").style.display = "none";
+        document.querySelector("#sec-login").style.display = "none";
+        document.querySelector("#sec-registro").style.display = "none";
+        document.querySelector("#sec-inicio").style.display = "none";
+        document.querySelector("#sec-mapa").style.display = "none";
     }
-    else if(evento.detail.to =="/page-six"){
-        document.querySelector("#sec-mapa").style.display="block";
-        document.querySelector("#sec-listadoCensados").style.display="none";
-        document.querySelector("#sec-agregarCensado").style.display="none";
-        document.querySelector("#sec-login").style.display="none";
-        document.querySelector("#sec-registro").style.display="none";
-        document.querySelector("#sec-inicio").style.display="none";
+    else if (evento.detail.to == "/page-six") {
+        document.querySelector("#sec-mapa").style.display = "block";
+        document.querySelector("#sec-listadoCensados").style.display = "none";
+        document.querySelector("#sec-agregarCensado").style.display = "none";
+        document.querySelector("#sec-login").style.display = "none";
+        document.querySelector("#sec-registro").style.display = "none";
+        document.querySelector("#sec-inicio").style.display = "none";
     }
 }
+
