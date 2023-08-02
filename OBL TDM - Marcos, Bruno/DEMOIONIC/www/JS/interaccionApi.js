@@ -279,31 +279,10 @@ function GetPers() {
 //#endregion
 
 //#region MAPA
+
+
 //#endregion
 
-//#region FIND BY OCUPACIÓN /ocupaciones.php
-function FindByOcup() {
-    fetch(censoAPI + "/ocupaciones.php", {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "apikey": localStorage.getItem("token")
-        }
-    })
-        .then(ConvResp)
-        .then(function (data) {
-            dqs("").innerHTML = "Encontrado";
-        })
-        .catch(function (error) {
-            dqs("").innerHTML = "Encontrado";
-        })
-        .then(function (datoError) {
-            if (datoError != undefined) {
-                dqs("").innerHTML = "Encontrado";
-            }
-        })
-}
-//#endregion
 
 //#region FINDALLCENSADOS /totalCensados.php
 function FindAllCensa2() {
@@ -342,19 +321,14 @@ function FiltroByOcup() {
         if (persona.ocupacion === Ocup) {
             const newRow = document.createElement("ion-row");
 
-            const nombreCol = document.createElement("ion-col");
             nombreCol.textContent = persona.nombre;
 
-            const departamentoCol = document.createElement("ion-col");
             departamentoCol.textContent = persona.departamento;
 
-            const ciudadCol = document.createElement("ion-col");
             ciudadCol.textContent = persona.ciudad;
 
-            const fechaNacimientoCol = document.createElement("ion-col");
             fechaNacimientoCol.textContent = persona.fechaNacimiento;
 
-            const ocupacionCol = document.createElement("ion-col");
             ocupacionCol.textContent = persona.ocupacion;
 
             // Agregamos las celdas a la fila
