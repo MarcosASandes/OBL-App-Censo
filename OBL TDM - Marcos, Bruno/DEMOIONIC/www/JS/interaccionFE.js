@@ -54,77 +54,10 @@ L.marker([latitudeOrigen, longitudeOrigen]).addTo(map);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// //#region Reutilizable
-
-
-
-
-// //#endregion
-
-
-
 function CerrarMenu() {
     document.querySelector("#menu").close();
 }
 
-
-/*
-function mostrarNav(){
-    if(hayUsuarioLogueado){
-        //botones del nav.
-        document.querySelector("#navLogin").style.display = "none";
-        document.querySelector("#navRegistro").style.display = "none";
-
-        document.querySelector("#navInicio").style.display = "block";
-        document.querySelector("#navCerrarSesion").style.display = "block";
-        document.querySelector("#navAgregarPersona").style.display = "block";
-        document.querySelector("#navObtenerPersonas").style.display = "block";
-        document.querySelector("#navMostrarMapa").style.display = "block";
-
-        //secciones que se ven.
-        document.querySelector("#sec-inicio").style.display = "block";
-        document.querySelector("#sec-agregarCensado").style.display = "block";
-        document.querySelector("#sec-listadoCensados").style.display = "block";
-        document.querySelector("#sec-mapa").style.display = "block";
-
-        //secciones que no se ven.
-        document.querySelector("#sec-registro").style.display = "none";
-        document.querySelector("#sec-login").style.display = "none";
-
-    }
-    else{
-        //botones del nav si no hay log.
-        document.querySelector("#navInicio").style.display = "none";
-        document.querySelector("#navCerrarSesion").style.display = "none";
-        document.querySelector("#navAgregarPersona").style.display = "none";
-        document.querySelector("#navObtenerPersonas").style.display = "none";
-        document.querySelector("#navMostrarMapa").style.display = "none";
-
-        //secciones
-        document.querySelector("#sec-inicio").style.display = "none";
-        document.querySelector("#sec-agregarCensado").style.display = "none";
-        document.querySelector("#sec-listadoCensados").style.display = "none";
-        document.querySelector("#sec-mapa").style.display = "none";
-    }
-}*/
 
 
 

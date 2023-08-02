@@ -262,7 +262,7 @@ function GetPers() {
         .then(function (data) {
             personasArray = data.personas;
             console.log("tabien")
-            recargarPersonas();
+            MostrarPersonas();
         })
         .catch(function (error) {
             console.log("tamal")
@@ -309,75 +309,29 @@ function FindAllCensa2() {
 //#endregion
 
 
-function FiltroByOcup() {
-    alert("")
-    let Ocup = dqs("#slcOcupacion2").value;
-    const gridContainer = document.querySelector("#gridcont");
+//  if (persona.ocupacion === Ocup) 
+function MostrarPersonas(){
+    let Tabla = 
+    `<ion-row>
+        <ion-col>Nombre</ion-col>
+        <ion-col>Departamento</ion-col>
+        <ion-col>Ciudad</ion-col>
+        <ion-col>Fecha de nacimiento</ion-col>
+        <ion-col>Ocupacion</ion-col>
+    </ion-row>`
 
-    gridContainer.innerHTML = "";
-    for (let i = 0; i < personasArray.length; i++) {
-        const persona = personasArray[i]; // Accedemos a la persona actual en el bucle
-
-        if (persona.ocupacion === Ocup) {
-            const newRow = document.createElement("ion-row");
-
-            nombreCol.textContent = persona.nombre;
-
-            departamentoCol.textContent = persona.departamento;
-
-            ciudadCol.textContent = persona.ciudad;
-
-            fechaNacimientoCol.textContent = persona.fechaNacimiento;
-
-            ocupacionCol.textContent = persona.ocupacion;
-
-            // Agregamos las celdas a la fila
-            newRow.appendChild(nombreCol);
-            newRow.appendChild(departamentoCol);
-            newRow.appendChild(ciudadCol);
-            newRow.appendChild(fechaNacimientoCol);
-            newRow.appendChild(ocupacionCol);
-
-            // Agregamos la fila al grid
-            gridContainer.appendChild(newRow);
-        }
+    for(let i = 0; i < personasArray.length; i++){
+        const element = personasArray[i];
+        Tabla += 
+        `<ion-row>
+            <ion-col>${element.nombre}</ion-col>
+            <ion-col>${element.departamento}</ion-col>
+            <ion-col>${element.ciudad}</ion-col>
+            <ion-col>${element.fechaNacimiento}</ion-col>
+            <ion-col>${element.ocupacion}</ion-col>
+        </ion-row>`;
     }
-    // if (personasArray.ocupacion === Ocup) {
 
-    //     }
+    document.querySelector("#gridContainer").innerHTML = Tabla;
 }
 
-function recargarPersonas() {
-    const gridContainer = document.querySelector("#gridcont");
-    gridContainer.innerHTML = "";
-    for (let i = 0; i < personasArray.length; i++) {
-        const persona = personasArray[i]; // Accedemos a la persona actual en el bucle
-
-        const newRow = document.createElement("ion-row");
-
-        const nombreCol = document.createElement("ion-col");
-        nombreCol.textContent = persona.nombre;
-
-        const departamentoCol = document.createElement("ion-col");
-        departamentoCol.textContent = persona.departamento;
-
-        const ciudadCol = document.createElement("ion-col");
-        ciudadCol.textContent = persona.ciudad;
-
-        const fechaNacimientoCol = document.createElement("ion-col");
-        fechaNacimientoCol.textContent = persona.fechaNacimiento;
-
-        const ocupacionCol = document.createElement("ion-col");
-        ocupacionCol.textContent = persona.ocupacion;
-
-        newRow.appendChild(nombreCol);
-        newRow.appendChild(departamentoCol);
-        newRow.appendChild(ciudadCol);
-        newRow.appendChild(fechaNacimientoCol);
-        newRow.appendChild(ocupacionCol);
-
-        // Agregamos la fila al grid
-        gridContainer.appendChild(newRow);
-
-    }
-}
