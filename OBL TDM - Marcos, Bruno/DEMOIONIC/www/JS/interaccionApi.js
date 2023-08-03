@@ -1,7 +1,9 @@
 const censoAPI = "https://censo.develotion.com/";
 let Token;
 let personasArray = [];
-
+let latitudeOrigen;
+let longitudeOrigen;
+navigator.geolocation.getCurrentPosition(SetearPosicionDispositivo, MostrarError);
 //#region REGISTRO /usuarios.php
 function registrarUsuario() {
     let user = dqs("#txtUser").value;
@@ -287,7 +289,27 @@ function GetPers() {
 //#endregion
 
 //#region MAPA
+function SetearPosicionDispositivo(position) {
+    console.log(position);
+    latitudeOrigen = position.coords.latitude;
+    longitudeOrigen = position.coords.longitude;
+}
 
+function MostrarMapa() {
+    if (navigator.geolocation) {
+        var map = L.map('map').setView([-34.903609710179076, -56.190603059985875], 13);
+        L.tileLayer('https://tile.openstreetmap.org/%7Bz%7D/%7Bx%7D/%7By%7D.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+        L.marker([latitudeOrigen, longitudeOrigen]).bindPopup("Usted").addTo(map);
+        //mapaInicializado = true;
+    }
+}
+
+function MostrarError(){
+    alert("ERROR")
+}
 
 //#endregion
 
