@@ -2,6 +2,13 @@ const censoAPI = "https://censo.develotion.com/";
 let Token;
 let personasArray = [];
 
+let latitudeOrigen;
+let longitudeOrigen;
+
+navigator.geolocation.getCurrentPosition(SetearPosicionDispositivo, MostrarError);
+
+//let mapaInicializado = false;
+
 //#region REGISTRO /usuarios.php
 function registrarUsuario() {
     let user = dqs("#txtUser").value;
@@ -178,7 +185,7 @@ function GetOcups(num) {
             console.log("llego");
             if (data.ocupaciones.length <= 0) {
                 console.log(data.ocupaciones);
-            } else if(num === 4){
+            } else if (num === 4) {
                 for (let i = 0; i < data.ocupaciones.length; i++) {
                     let ocupacion = data.ocupaciones[i];
                     let optionElement = document.createElement("ion-select-option");
@@ -187,7 +194,7 @@ function GetOcups(num) {
                     slcoCUP.appendChild(optionElement);
                     console.log(optionElement.value);
                 }
-            }else if(num===5){
+            } else if (num === 5) {
                 for (let i = 0; i < data.ocupaciones.length; i++) {
                     let ocupacion = data.ocupaciones[i];
                     let optionElement = document.createElement("ion-select-option");
@@ -286,6 +293,36 @@ function GetPers() {
 
 //#region MAPA
 
+function SetearPosicionDispositivo(position) {
+    console.log(position);
+    latitudeOrigen = position.coords.latitude;
+    longitudeOrigen = position.coords.longitude;
+}
+
+function MostrarMapa() {
+    if (navigator.geolocation) {
+        var map = L.map('map').setView([-34.903609710179076, -56.190603059985875], 13);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+        L.marker([latitudeOrigen, longitudeOrigen]).bindPopup("Usted").addTo(map);
+        //mapaInicializado = true;
+    }
+}
+
+//ReinicioMapa();
+
+/*function ReinicioMapa(){
+    if(mapaInicializado){
+        document.querySelector("#map").clear;
+        MostrarMapa();
+    }
+}*/
+
+function MostrarError(){
+
+}
 
 //#endregion
 
@@ -304,7 +341,7 @@ function FindAllCensa2() {
     })
         .then(ConvResp)
         .then(function (data) {
-        dqs("#totalcens").innerHTML=data.total;
+            dqs("#totalcens").innerHTML = data.total;
         })
         .catch(function (error) {
         })
@@ -355,7 +392,7 @@ function filtroByOcu() {
 
     for (let i = 0; i < personasArray.length; i++) {
         const element = personasArray[i];
-        ret =element.ocupacion;
+        ret = element.ocupacion;
         if (ocu === ret) {
 
             Tabla +=
