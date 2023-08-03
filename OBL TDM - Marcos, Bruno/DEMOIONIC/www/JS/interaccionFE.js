@@ -73,6 +73,7 @@ function mostrarPagina(evento) {
         document.querySelector("#sec-agregarCensado").style.display = "none";
         document.querySelector("#sec-listadoCensados").style.display = "none";
         document.querySelector("#sec-mapa").style.display = "none";
+        document.querySelector("#sec-totcens").style.display = "none";
     }
     else if (evento.detail.to == "/page-two") {
         document.querySelector("#sec-registro").style.display = "block";
@@ -81,6 +82,7 @@ function mostrarPagina(evento) {
         document.querySelector("#sec-agregarCensado").style.display = "none";
         document.querySelector("#sec-listadoCensados").style.display = "none";
         document.querySelector("#sec-mapa").style.display = "none";
+        document.querySelector("#sec-totcens").style.display = "none";
     }
     else if (evento.detail.to == "/page-three") {
         document.querySelector("#sec-login").style.display = "block";
@@ -89,30 +91,45 @@ function mostrarPagina(evento) {
         document.querySelector("#sec-agregarCensado").style.display = "none";
         document.querySelector("#sec-listadoCensados").style.display = "none";
         document.querySelector("#sec-mapa").style.display = "none";
+        document.querySelector("#sec-totcens").style.display = "none";
     }
     else if (evento.detail.to == "/page-four") {
+        GetOcups(4);
         document.querySelector("#sec-agregarCensado").style.display = "block";
         document.querySelector("#sec-login").style.display = "none";
         document.querySelector("#sec-registro").style.display = "none";
         document.querySelector("#sec-inicio").style.display = "none";
         document.querySelector("#sec-listadoCensados").style.display = "none";
         document.querySelector("#sec-mapa").style.display = "none";
+        document.querySelector("#sec-totcens").style.display = "none";
     }
     else if (evento.detail.to == "/page-five") {
+        GetOcups(5);
         document.querySelector("#sec-listadoCensados").style.display = "block";
         document.querySelector("#sec-agregarCensado").style.display = "none";
         document.querySelector("#sec-login").style.display = "none";
         document.querySelector("#sec-registro").style.display = "none";
         document.querySelector("#sec-inicio").style.display = "none";
         document.querySelector("#sec-mapa").style.display = "none";
+        document.querySelector("#sec-totcens").style.display = "none";
     }
     else if (evento.detail.to == "/page-six") {
         document.querySelector("#sec-mapa").style.display = "block";
+        document.querySelector("#sec-listadoCensados").style.display = "none";
+        document.querySelector("#sec-agreg arCensado").style.display = "none";
+        document.querySelector("#sec-login").style.display = "none";
+        document.querySelector("#sec-registro").style.display = "none";
+        document.querySelector("#sec-inicio").style.display = "none";
+        document.querySelector("#sec-totcens").style.display = "none";
+    }
+    else if (evento.detail.to == "/page-seven") {
+        document.querySelector("#sec-mapa").style.display = "none";
         document.querySelector("#sec-listadoCensados").style.display = "none";
         document.querySelector("#sec-agregarCensado").style.display = "none";
         document.querySelector("#sec-login").style.display = "none";
         document.querySelector("#sec-registro").style.display = "none";
         document.querySelector("#sec-inicio").style.display = "none";
+        document.querySelector("#sec-totcens").style.display = "block";
     }
 }
 

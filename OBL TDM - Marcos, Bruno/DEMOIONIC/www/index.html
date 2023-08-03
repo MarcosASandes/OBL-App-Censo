@@ -31,6 +31,7 @@
             <ion-route url="/page-four" component="sec-agregarCensado"></ion-route>
             <ion-route url="/page-five" component="sec-listadoCensados"></ion-route>
             <ion-route url="/page-six" component="sec-mapa"></ion-route>
+            <ion-route url="/page-seven" component="sec-totcens"></ion-route>
         </ion-router>
 
         <ion-nav></ion-nav>
@@ -51,6 +52,7 @@
                     <ion-item href="/page-four" onclick="CerrarMenu();">Agregar censado</ion-item>
                     <ion-item href="/page-five" onclick="CerrarMenu(); GetPers(); ">Listado de censados</ion-item>
                     <ion-item href="/page-six" onclick="CerrarMenu()">Mapa</ion-item>
+                    <ion-item href="/page-seven" onclick="CerrarMenu(); FindAllCensa2()">Total de personas censadas</ion-item>
                 </ion-list>
             </ion-content>
         </ion-menu>
@@ -193,12 +195,27 @@
                         </ion-select>
                     </ion-item>
 
-                    <ion-button color="dark" id="btnFiltro" onclick="FiltroByOcup()">Filtrar</ion-button>
+                    <ion-button color="dark" id="btnFiltro" onclick="filtroByOcu()">Filtrar</ion-button>
                 </ion-list>
 
                 <ion-grid fixed="true" id="gridContainer" >
-                
                 </ion-grid>
+            </ion-content>
+        </ion-page>
+
+        <ion-page class="ion-page" id="sec-totcens">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    Total de personas censadas
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+                <ion-item>
+                    <h3 id="totalcens"></h3>
+                </ion-item>
             </ion-content>
         </ion-page>
 

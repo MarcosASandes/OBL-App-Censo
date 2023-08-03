@@ -29,7 +29,6 @@ function registrarUsuario() {
                 localStorage.setItem("token", data.apiKey); // todo gestion de errores
                 localStorage.setItem("idus", data.id); // todo gestion de errores
                 document.querySelector("#registro-msg").innerHTML = "vemos";
-                GetOcups();
             })
             .catch(function (Error) {
                 throw Error;
@@ -66,7 +65,6 @@ function iniciarSesion() {
             localStorage.setItem("token", data.apiKey); // todo gestion de errores
             document.querySelector("#login-msg").innerHTML = "Encontrado";
             localStorage.setItem("idus", data.id); // todo gestion de errores
-            GetOcups();
         })
         .catch(function (error) {
             document.querySelector("#login-msg").innerHTML = error;
@@ -161,7 +159,8 @@ function GetCitys() {
 
 //#region /ocupaciones.php
 
-function GetOcups() {
+function GetOcups(num) {
+    console.log(this);
     let tok = localStorage.getItem("token");
     let idu = localStorage.getItem("idus");
     const slcoCUP = document.querySelector("#slcOcupacion");
@@ -179,15 +178,22 @@ function GetOcups() {
             console.log("llego");
             if (data.ocupaciones.length <= 0) {
                 console.log(data.ocupaciones);
-            } else {
-                console.log(data.ocupaciones);
+            } else if(num === 4){
                 for (let i = 0; i < data.ocupaciones.length; i++) {
                     let ocupacion = data.ocupaciones[i];
                     let optionElement = document.createElement("ion-select-option");
                     optionElement.value = ocupacion.id;
                     optionElement.textContent = ocupacion.ocupacion;
                     slcoCUP.appendChild(optionElement);
-                    slcoCUP2.appendChild(optionElement.cloneNode(true));
+                    console.log(optionElement.value);
+                }
+            }else if(num===5){
+                for (let i = 0; i < data.ocupaciones.length; i++) {
+                    let ocupacion = data.ocupaciones[i];
+                    let optionElement = document.createElement("ion-select-option");
+                    optionElement.value = ocupacion.id;
+                    optionElement.textContent = ocupacion.ocupacion;
+                    slcoCUP2.appendChild(optionElement);
                     console.log(optionElement.value);
                 }
             }
@@ -284,35 +290,35 @@ function GetPers() {
 //#endregion
 
 
-//#region FINDALLCENSADOS /totalCensados.php
+//#region FINDALLCENSADOS /totalCensados.php totalcens
 function FindAllCensa2() {
+    let tok = localStorage.getItem("token");
+    let idu = localStorage.getItem("idus");
     fetch(censoAPI + "/totalCensados.php", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "apikey": localStorage.getItem("token")
+            "apikey": tok,
+            "iduser": idu
         }
     })
         .then(ConvResp)
         .then(function (data) {
-            dqs("").innerHTML = "";
+        dqs("#totalcens").innerHTML=data.total;
         })
         .catch(function (error) {
-            dqs("w").innerHTML = "asdad";
         })
         .then(function (datoError) {
             if (datoError != undefined) {
-                dqs("w").innerHTML = dqs("w").value + "sdasfasf";
             }
         })
 }
 //#endregion
 
 
-//  if (persona.ocupacion === Ocup) 
-function MostrarPersonas(){
-    let Tabla = 
-    `<ion-row>
+function MostrarPersonas() {
+    let Tabla =
+        `<ion-row>
         <ion-col>Nombre</ion-col>
         <ion-col>Departamento</ion-col>
         <ion-col>Ciudad</ion-col>
@@ -320,16 +326,47 @@ function MostrarPersonas(){
         <ion-col>Ocupacion</ion-col>
     </ion-row>`
 
-    for(let i = 0; i < personasArray.length; i++){
+    for (let i = 0; i < personasArray.length; i++) {
         const element = personasArray[i];
-        Tabla += 
-        `<ion-row>
+        Tabla +=
+            `<ion-row>
             <ion-col>${element.nombre}</ion-col>
             <ion-col>${element.departamento}</ion-col>
             <ion-col>${element.ciudad}</ion-col>
             <ion-col>${element.fechaNacimiento}</ion-col>
             <ion-col>${element.ocupacion}</ion-col>
         </ion-row>`;
+    }
+
+    document.querySelector("#gridContainer").innerHTML = Tabla;
+}
+
+function filtroByOcu() {
+    let ret;
+    let ocu = document.querySelector("#slcOcupacion2").value;
+    let Tabla =
+        `<ion-row>
+        <ion-col>Nombre</ion-col>
+        <ion-col>Departamento</ion-col>
+        <ion-col>Ciudad</ion-col>
+        <ion-col>Fecha de nacimiento</ion-col>
+        <ion-col>Ocupacion</ion-col>
+    </ion-row>`
+
+    for (let i = 0; i < personasArray.length; i++) {
+        const element = personasArray[i];
+        ret =element.ocupacion;
+        if (ocu === ret) {
+
+            Tabla +=
+                `<ion-row>
+                <ion-col>${element.nombre}</ion-col>
+                <ion-col>${element.departamento}</ion-col>
+                <ion-col>${element.ciudad}</ion-col>
+                <ion-col>${element.fechaNacimiento}</ion-col>
+                <ion-col>${element.ocupacion}</ion-col>
+            </ion-row>`;
+        }
     }
 
     document.querySelector("#gridContainer").innerHTML = Tabla;
