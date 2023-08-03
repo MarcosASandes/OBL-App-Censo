@@ -14,8 +14,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <!--Fin API-->
-    <script src="JS/user.js" defer></script>
-    <script src="JS/persona.js" defer></script>
+    <script src="JS/seteo.js" defer></script>
     <script src="JS/reuse.js" defer></script>
     <script src="JS/interaccionApi.js" defer></script>
     <script src="JS/interaccionFE.js" defer></script>
@@ -50,9 +49,9 @@
                     <ion-item href="/page-two" onclick="CerrarMenu()">Registrarse</ion-item>
                     <ion-item href="/page-three" onclick="CerrarMenu()">Login</ion-item>
                     <ion-item href="/page-four" onclick="CerrarMenu();">Agregar censado</ion-item>
-                    <ion-item href="/page-five" onclick="CerrarMenu(); GetPers(); ">Listado de censados</ion-item>
+                    <ion-item href="/page-five" onclick="CerrarMenu();  GetPers(); ">Listado de censados</ion-item>
                     <ion-item href="/page-six" onclick="CerrarMenu()">Mapa</ion-item>
-                    <ion-item href="/page-seven" onclick="CerrarMenu(); FindAllCensa2()">Total de personas censadas</ion-item>
+                    <ion-item href="/page-seven" onclick="CerrarMenu(); PrecargarArry();  GetPers();  FindAllCensa2();">Total de personas censados</ion-item>
                 </ion-list>
             </ion-content>
         </ion-menu>
@@ -209,12 +208,18 @@
                     <ion-buttons slot="start">
                         <ion-menu-button></ion-menu-button>
                     </ion-buttons>
-                    Total de personas censadas
+                    Total de personas censados
                 </ion-toolbar>
             </ion-header>
             <ion-content>
                 <ion-item>
                     <h3 id="totalcens"></h3>
+                </ion-item>
+                <ion-item>
+                    <h4 id="census"></h4>
+                </ion-item>
+                <ion-item>
+                    <h4 id="censMvd"></h4>
                 </ion-item>
             </ion-content>
         </ion-page>

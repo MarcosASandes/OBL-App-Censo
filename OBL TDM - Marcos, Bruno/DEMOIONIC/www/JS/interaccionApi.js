@@ -100,6 +100,7 @@ function SetDeptos() {
                 optionElement.value = departamento.id;
                 optionElement.textContent = departamento.nombre;
                 selectElement.appendChild(optionElement);
+
             }
         })
         .catch(function (error) {
@@ -267,7 +268,8 @@ function GetPers() {
         .then(ConvResp)
         .then(function (data) {
             personasArray = data.personas;
-            console.log("tabien")
+            console.log("tabien");
+            localStorage.setItem("cantidadCen", data.personas.length)
             MostrarPersonas();
         })
         .catch(function (error) {
@@ -294,6 +296,7 @@ function GetPers() {
 function FindAllCensa2() {
     let tok = localStorage.getItem("token");
     let idu = localStorage.getItem("idus");
+    let q = localStorage.getItem("cantidadCen");
     fetch(censoAPI + "/totalCensados.php", {
         method: "GET",
         headers: {
@@ -304,7 +307,9 @@ function FindAllCensa2() {
     })
         .then(ConvResp)
         .then(function (data) {
-        dqs("#totalcens").innerHTML=data.total;
+            dqs("#totalcens").innerHTML=" Total de censos realizados:  " + data.total;
+            dqs("#census").innerHTML= "  Cantidad de personas censadas por este usuario:  " + q;
+            dqs("#censMvd").innerHTML= "  Cantidad de personas censadas en Montevideo:  " + q;
         })
         .catch(function (error) {
         })

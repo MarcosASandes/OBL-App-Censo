@@ -105,6 +105,7 @@ function mostrarPagina(evento) {
     }
     else if (evento.detail.to == "/page-five") {
         GetOcups(5);
+        PrecargarArry(); 
         document.querySelector("#sec-listadoCensados").style.display = "block";
         document.querySelector("#sec-agregarCensado").style.display = "none";
         document.querySelector("#sec-login").style.display = "none";
