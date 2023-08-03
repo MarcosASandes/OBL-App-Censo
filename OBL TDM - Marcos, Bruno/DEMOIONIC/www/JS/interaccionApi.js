@@ -219,7 +219,7 @@ function AddPers() {
     let idu = localStorage.getItem("idus");
     //ID PERSONA
 
-    if (localStorage.getItem("token") === null) {
+    if (tok === null) {
         ruteo.push("/");
         throw new Error("No estas logueado"); //se tiene que cargar en el párrafo de inicio de sesion
     }
@@ -228,30 +228,43 @@ function AddPers() {
     let city = dqs("#slcCiudades").value;
     let fchNac = dqs("#dateFechaNac").value;
     let Ocup = dqs("#slcOcupacion").value;
-    fetch(censoAPI + "/personas.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "apikey": tok,
-            "iduser": idu
-        },
-        body: JSON.stringify({
-            "idUsuario": idu,
-            "nombre": name,
-            "departamento": dpto,
-            "ciudad": city,
-            "fechaNacimiento": fchNac,
-            "ocupacion": Ocup
-        })
-    })
-        .then(ConvResp)
-        .then(function (data) {
-            // dqs("").innerHTML = "Encontrado";
-        })
-        .catch(function (error) {
-            // dqs("").innerHTML = "Encontrado";
-        })
 
+    if (name == "" || fchNac == "" || dpto == null || city == null || Ocup == null) {
+        dqs("#errorAddP").innerHTML = "Chequear datos";
+    } else if (Ocup !== 5 || Ocup !== 8) {
+        const fechaNacimiento = new Date(fchNac);
+        const tiempoActual = Date.now();
+        const tiempoNacimiento = fechaNacimiento.getTime();
+        const diferenciaTiempo = tiempoActual - tiempoNacimiento;
+        const diferenciaAnios = diferenciaTiempo/ (1000 * 60 * 60 * 24 * 365.25);
+        if (diferenciaAnios < 18) {
+            dqs("#errorAddP").innerHTML = "Como menor solo puedes ser estudiante o no trabajar";
+        } else {
+        fetch(censoAPI + "/personas.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "apikey": tok,
+                "iduser": idu
+            },
+            body: JSON.stringify({
+                "idUsuario": idu,
+                "nombre": name,
+                "departamento": dpto,
+                "ciudad": city,
+                "fechaNacimiento": fchNac,
+                "ocupacion": Ocup
+            })
+        })
+            .then(ConvResp)
+            .then(function (data) {
+                // dqs("").innerHTML = "Encontrado";
+            })
+            .catch(function (error) {
+                // dqs("").innerHTML = "Encontrado";
+            })
+        }
+    }
 }
 //#endregion
 
@@ -270,8 +283,17 @@ function GetPers() {
         .then(ConvResp)
         .then(function (data) {
             personasArray = data.personas;
-            console.log("tabien");
             localStorage.setItem("cantidadCen", data.personas.length)
+            let qM = 0;
+            for (let i = 0; i < data.personas.length; i++) {
+                //3218
+                console.log("tabien");
+                let dp = data.personas[i];
+                if (dp.departamento == 3218) {
+                    qM++;
+                }
+            }
+            localStorage.setItem("cantidadMvd", qM);
             MostrarPersonas();
         })
         .catch(function (error) {
@@ -307,8 +329,7 @@ function MostrarMapa() {
     }
 }
 
-function MostrarError(){
-    alert("ERROR")
+function MostrarError() {
 }
 
 //#endregion
@@ -319,6 +340,7 @@ function FindAllCensa2() {
     let tok = localStorage.getItem("token");
     let idu = localStorage.getItem("idus");
     let q = localStorage.getItem("cantidadCen");
+    let qM = localStorage.getItem("cantidadMvd");
     fetch(censoAPI + "/totalCensados.php", {
         method: "GET",
         headers: {
@@ -329,9 +351,9 @@ function FindAllCensa2() {
     })
         .then(ConvResp)
         .then(function (data) {
-            dqs("#totalcens").innerHTML=" Total de censos realizados:  " + data.total;
-            dqs("#census").innerHTML= "  Cantidad de personas censadas por este usuario:  " + q;
-            dqs("#censMvd").innerHTML= "  Cantidad de personas censadas en Montevideo:  " + q;
+            dqs("#totalcens").innerHTML = " Total de censos realizados:  " + data.total;
+            dqs("#census").innerHTML = "  Cantidad de personas censadas por este usuario:  " + q;
+            dqs("#censMvd").innerHTML = "  Cantidad de personas censadas en Montevideo:  " + qM;
         })
         .catch(function (error) {
         })
@@ -358,10 +380,10 @@ function MostrarPersonas() {
         Tabla +=
             `<ion-row>
             <ion-col>${element.nombre}</ion-col>
-            <ion-col>${element.departamento}</ion-col>
-            <ion-col>${element.ciudad}</ion-col>
+            <ion-col>${setnombrebyid(element.departamento)}</ion-col>
+            <ion-col>${setnombrebyid(element.ciudad)}</ion-col>
             <ion-col>${element.fechaNacimiento}</ion-col>
-            <ion-col>${element.ocupacion}</ion-col>
+            <ion-col>${setnombrebyid(element.ocupacion)}</ion-col>
         </ion-row>`;
     }
 
@@ -388,14 +410,22 @@ function filtroByOcu() {
             Tabla +=
                 `<ion-row>
                 <ion-col>${element.nombre}</ion-col>
-                <ion-col>${element.departamento}</ion-col>
-                <ion-col>${element.ciudad}</ion-col>
+                <ion-col>${setnombrebyid(element.departamento)}</ion-col>
+                <ion-col>${setnombrebyid(element.ciudad)}</ion-col>
                 <ion-col>${element.fechaNacimiento}</ion-col>
-                <ion-col>${element.ocupacion}</ion-col>
+                <ion-col>${setnombrebyid(element.ocupacion)}</ion-col>
             </ion-row>`;
         }
     }
 
     document.querySelector("#gridContainer").innerHTML = Tabla;
 }
-
+function setnombrebyid(id) {
+    let arry = setRet();
+    for (let i = 0; i < arry.length; i++) {
+        let pos = arry[i];
+        if (id === pos.id) {
+            return pos.name;
+        }
+    }
+}

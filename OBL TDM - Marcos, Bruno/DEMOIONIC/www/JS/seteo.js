@@ -13,6 +13,7 @@ function PrecargarArry(){
    
     }
 }
+function setRet(){ return setnames;}
 //#region SETDEPTOS /departamentos.php 
 function SetDeptosA() {
     let tok = localStorage.getItem("token");
