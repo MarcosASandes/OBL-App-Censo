@@ -181,7 +181,7 @@ function GetOcups(num) {
             console.log("llego");
             if (data.ocupaciones.length <= 0) {
                 console.log(data.ocupaciones);
-            } else if(num === 4){
+            } else if (num === 4) {
                 for (let i = 0; i < data.ocupaciones.length; i++) {
                     let ocupacion = data.ocupaciones[i];
                     let optionElement = document.createElement("ion-select-option");
@@ -190,7 +190,7 @@ function GetOcups(num) {
                     slcoCUP.appendChild(optionElement);
                     console.log(optionElement.value);
                 }
-            }else if(num===5){
+            } else if (num === 5) {
                 for (let i = 0; i < data.ocupaciones.length; i++) {
                     let ocupacion = data.ocupaciones[i];
                     let optionElement = document.createElement("ion-select-option");
@@ -382,7 +382,7 @@ function filtroByOcu() {
 
     for (let i = 0; i < personasArray.length; i++) {
         const element = personasArray[i];
-        ret =element.ocupacion;
+        ret = element.ocupacion;
         if (ocu === ret) {
 
             Tabla +=
