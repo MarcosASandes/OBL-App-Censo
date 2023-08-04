@@ -9,48 +9,31 @@ if (usConect === false) {
 }
 
 
-/*REGION MAPA*/
-//Codigo comentado para ver a futuro, el problema radica en que el mapa aparece en cualquier parte de la pantalla
-//y en cualquier seccion.
+function OcultarBotones(){
+    let tok = localStorage.getItem("token");
+    let idu = localStorage.getItem("idus");
 
-//ToDo
-/*
-let latitudeOrigen;
-let longitudeOrigen;
-navigator.geolocation.getCurrentPosition(SetearPosicionDispositivo, MostrarError);
-
-MostrarMapa();
-
-function SetearPosicionDispositivo(position){
-    console.log(position);
-    latitudeOrigen=position.coords.latitude;
-    longitudeOrigen=position.coords.longitude;
-  
-}
-function MostrarError(error){
-    console.log(error);
-}
-
-function MostrarMapa(){
-    if(navigator.geolocation){
-        var map = L.map('sec-mapa').setView([-34.903609710179076, -56.190603059985875], 13);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '© OpenStreetMap'
-}).addTo(map);
-L.marker([-34.903609710179076, -56.190603059985875]).bindPopup("Usted").addTo(map);
-L.marker([latitudeOrigen, longitudeOrigen]).addTo(map);
+    if(tok === null || tok === undefined){
+        dqs("#nav-login").style.display = "block";
+        dqs("#nav-registro").style.display = "block";
+        dqs("#nav-addCensado").style.display = "none";
+        dqs("#nav-getCensados").style.display = "none";
+        dqs("#nav-mapa").style.display = "none";
+        dqs("#nav-totalCensados").style.display = "none";
+        dqs("#nav-logout").style.display = "none";
     }
-    
-}*/
+    else{
+        dqs("#nav-login").style.display = "none";
+        dqs("#nav-registro").style.display = "none";
+        dqs("#nav-addCensado").style.display = "block";
+        dqs("#nav-getCensados").style.display = "block";
+        dqs("#nav-mapa").style.display = "block";
+        dqs("#nav-totalCensados").style.display = "block";
+        dqs("#nav-logout").style.display = "inline-block";
+    }
+}
 
-/*FIN MAPA*/
-
-
-
-
-
-
+OcultarBotones();
 
 
 
@@ -133,5 +116,14 @@ function mostrarPagina(evento) {
         document.querySelector("#sec-inicio").style.display = "none";
         document.querySelector("#sec-totcens").style.display = "block";
     }
+}
+
+
+function RedireccionARegistro(){
+    ruteo.push("/page-two");
+}
+
+function RedireccionALogin(){
+    ruteo.push("/page-three");
 }
 

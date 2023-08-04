@@ -40,24 +40,27 @@
                 <ion-toolbar color="primary">
                     <ion-title>Menu</ion-title>
                 </ion-toolbar>
-                <ion-button onclick="logout()">Logout</ion-button>
+                <ion-button onclick="logout()" id="nav-logout">Logout</ion-button>
+                <ion-button onclick="CerrarMenu()">-></ion-button>
             </ion-header>
             </ion-header>
             <ion-content class="ion-padding">
                 <ion-list>
-                    <ion-item href="/" onclick="CerrarMenu()">Inicio</ion-item>
-                    <ion-item href="/page-two" onclick="CerrarMenu()">Registrarse</ion-item>
-                    <ion-item href="/page-three" onclick="CerrarMenu()">Login</ion-item>
-                    <ion-item href="/page-four" onclick="CerrarMenu();">Agregar censado</ion-item>
-                    <ion-item href="/page-five" onclick="CerrarMenu();  GetPers(); ">Listado de censados</ion-item>
-                    <ion-item href="/page-six" onclick="CerrarMenu()">Mapa</ion-item>
-                    <ion-item href="/page-seven" onclick="CerrarMenu(); PrecargarArry();  GetPers();  FindAllCensa2();">Total de personas censados</ion-item>
+                    <!--NAV-->
+                    <ion-item href="/" onclick="CerrarMenu()" id="nav-inicio">Inicio</ion-item>
+                    <ion-item href="/page-two" onclick="CerrarMenu()" id="nav-registro">Registrarse</ion-item>
+                    <ion-item href="/page-three" onclick="CerrarMenu()" id="nav-login">Login</ion-item>
+                    <ion-item href="/page-four" onclick="CerrarMenu();" id="nav-addCensado">Agregar censado</ion-item>
+                    <ion-item href="/page-five" onclick="CerrarMenu();  GetPers(); " id="nav-getCensados">Listado de censados</ion-item>
+                    <ion-item href="/page-six" onclick="CerrarMenu()" id="nav-mapa">Mapa</ion-item>
+                    <ion-item href="/page-seven" onclick="CerrarMenu(); PrecargarArry();  GetPers();  FindAllCensa2();" id="nav-totalCensados">Total de personas censados</ion-item>
                 </ion-list>
             </ion-content>
         </ion-menu>
 
         <div id="main-content"></div>
 
+        <!--Seccion: Inicio. Funcionalidad: Pagina de presentacion inicial.-->
         <ion-page class="ion-page" id="sec-inicio">
             <ion-header>
                 <ion-toolbar>
@@ -72,6 +75,7 @@
             </ion-content>
         </ion-page>
 
+        <!--Seccion: Registro. Funcionalidad: Registrar un nuevo censista.-->
         <ion-page class="ion-page" id="sec-registro">
             <ion-header>
                 <ion-toolbar>
@@ -83,7 +87,6 @@
 
             </ion-header>
             <ion-content>
-                <h2>Registrarse</h2>
                 <ion-list>
                     <ion-item>
                         <ion-input label="Usuario: " id="txtUser"></ion-input>
@@ -93,7 +96,9 @@
                         <ion-input label="Contraseña: " type="password" id="txtPass"></ion-input>
                     </ion-item>
 
-                    <ion-button color="dark" id="btnRegistrar">Registrar usuario</ion-button>
+                    <ion-button color="dark" id="btnRegistrar" onclick="OcultarBotones()">Registrar usuario</ion-button>
+
+                    <ion-button color="dark" id="btnLogin-Redireccion" onclick="RedireccionALogin()">Ya tengo usuario</ion-button>
 
                     <ion-item>
                         <p id="registro-msg"></p>
@@ -103,6 +108,7 @@
             </ion-content>
         </ion-page>
 
+        <!--Seccion: Login. Funcionalidad: Loguearse con un censista existente.-->
         <ion-page class="ion-page" id="sec-login">
             <ion-header>
                 <ion-toolbar>
@@ -123,7 +129,8 @@
                         <ion-input label="Contraseña: " type="password" id="txtPassLogin"></ion-input>
                     </ion-item>
 
-                    <ion-button color="dark" id="btnIngresar">Loguearse</ion-button>
+                    <ion-button color="dark" id="btnIngresar" onclick="OcultarBotones()">Loguearse</ion-button>
+                    <ion-button color="dark" id="btnRegistro-Redireccion" onclick="RedireccionARegistro()">Crear usuario</ion-button>
 
                     <ion-item>
                         <p id="login-msg"></p>
@@ -132,6 +139,7 @@
             </ion-content>
         </ion-page>
 
+        <!--Seccion: Agregar censado. Funcionalidad: Crear un nuevo censo.-->
         <ion-page class="ion-page" id="sec-agregarCensado">
             <ion-header>
                 <ion-toolbar>
@@ -179,7 +187,7 @@
             </ion-content>
         </ion-page>
 
-        <!--ToDo-->
+        <!--Seccion: Listado de censados. Funcionalidad: Obtener todos los censados realizados, con filtro.-->
         <ion-page class="ion-page" id="sec-listadoCensados">
             <ion-header>
                 <ion-toolbar>
@@ -199,6 +207,10 @@
                     </ion-item>
 
                     <ion-button color="dark" id="btnFiltro" onclick="filtroByOcu()">Filtrar</ion-button>
+
+                    <ion-item>
+                        <p id="msj-sec-listadoCensados"></p>
+                    </ion-item>
                 </ion-list>
 
                 <ion-grid fixed="true" id="gridContainer" >
@@ -206,6 +218,8 @@
             </ion-content>
         </ion-page>
 
+        <!--Seccion: Total de censados. Funcionalidad: Visualizar el total de censados en general, los hechos
+            por el usuario logueado, y de entre estos, los que son de Montevideo.-->
         <ion-page class="ion-page" id="sec-totcens">
             <ion-header>
                 <ion-toolbar>
@@ -225,9 +239,14 @@
                 <ion-item>
                     <h4 id="censMvd"></h4>
                 </ion-item>
+                <ion-item>
+                    <p id="sec-totcens-msj"></p>
+                </ion-item>
             </ion-content>
         </ion-page>
 
+        <!--Seccion: Mapa. Funcionalidad: Dar una distancia, dibujarla en el mapa y obtener todos los censados
+            que esten en el radio de la distancia establecida.-->
         <ion-page class="ion-page" id="sec-mapa">
             <ion-header>
                 <ion-toolbar>
@@ -251,18 +270,13 @@
             </ion-content>
         </ion-page>
 
+        <!--Necesario para el funcionamiento del mapa.-->
         <style>
             #map {
                 height: 180px;
             }
         </style>
-
-
-
-
     </ion-app>
-
-
 
 </body>
 

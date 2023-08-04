@@ -4,51 +4,59 @@ let personasArray = [];
 let latitudeOrigen;
 let longitudeOrigen;
 navigator.geolocation.getCurrentPosition(SetearPosicionDispositivo, MostrarError);
-//#region REGISTRO /usuarios.php
+
+//#region REGISTRO | /usuarios.php
 function registrarUsuario() {
     let user = dqs("#txtUser").value;
     let pass = dqs("#txtPass").value;
 
-    try {
-        if (user.trim().length == 0 || pass.trim().length == 0) {
-            throw new Error("Inconsistencia de datos");
-        }
-        //Implementacion de la API - Prueba
-        //Resultado obtenido: 409 Ya existe un usuario con ese nombre.
-        fetch(censoAPI + "/usuarios.php",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    "usuario": user,
-                    "password": pass
-                })
-            })
-            .then(ConvResp)
-            .then(function (data) {
-                localStorage.setItem("token", data.apiKey); // todo gestion de errores
-                localStorage.setItem("idus", data.id); // todo gestion de errores
-                document.querySelector("#registro-msg").innerHTML = "vemos";
-            })
-            .catch(function (Error) {
-                throw Error;
-            })
+    if(user === "" || pass === ""){
+        document.querySelector("#registro-msg").innerHTML = "Datos no validos.";
     }
-    catch (Error) {
-        document.querySelector("#registro-msg").innerHTML = Error.message;
+    else{
+        try {
+            if (user.trim().length == 0 || pass.trim().length == 0) {
+                throw new Error("Inconsistencia de datos");
+            }
+            fetch(censoAPI + "/usuarios.php",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        "usuario": user,
+                        "password": pass
+                    })
+                })
+                .then(ConvResp)
+                .then(function (data) {
+                    localStorage.setItem("token", data.apiKey);
+                    localStorage.setItem("idus", data.id);
+                    document.querySelector("#registro-msg").innerHTML = "Registrado correctamente.";
+                    OcultarBotones();
+                })
+                .catch(function (Error) {
+                    throw Error;
+                })
+        }
+        catch (Error) {
+            document.querySelector("#registro-msg").innerHTML = Error.message;
+        }
     }
 }
 //#endregion
 
 
+//#region Logout
 function logout() {
     localStorage.clear();
+    OcultarBotones();
 }
+//#endregion
 
-//#region LOGIN /login.php?&
 
+//#region LOGIN | /login.php?&
 function iniciarSesion() {
     let nombreUsuario = dqs("#txtUserLogin").value;
     let password = dqs("#txtPassLogin").value;
@@ -64,9 +72,10 @@ function iniciarSesion() {
     })
         .then(ConvResp)
         .then(function (data) {
-            localStorage.setItem("token", data.apiKey); // todo gestion de errores
-            document.querySelector("#login-msg").innerHTML = "Encontrado";
-            localStorage.setItem("idus", data.id); // todo gestion de errores
+            localStorage.setItem("token", data.apiKey);
+            document.querySelector("#login-msg").innerHTML = "Login correcto.";
+            localStorage.setItem("idus", data.id);
+            OcultarBotones();
         })
         .catch(function (error) {
             document.querySelector("#login-msg").innerHTML = error;
@@ -77,9 +86,10 @@ function iniciarSesion() {
             }
         })
 }
-//#endregiond
+//#endregion
 
-//#region SETDEPTOS /departamentos.php 
+
+//#region SETDEPTOS | /departamentos.php 
 function SetDeptos() {
     let tok = localStorage.getItem("token");
     let idu = localStorage.getItem("idus");
@@ -89,35 +99,35 @@ function SetDeptos() {
         headers: {
             "Content-Type": "application/json",
             "apikey": tok,
-            "iduser": idu // todo gestion de errores, 
+            "iduser": idu 
         }
     })
         .then(ConvResp)
         .then(function (data) {
             const selectElement = document.querySelector("#slcDepartamentos");
-            selectElement.innerHTML = ""; // Limpiar el select            
+            selectElement.innerHTML = "";            
             for (let i = 0; i < data.departamentos.length; i++) {
                 let departamento = data.departamentos[i];
                 const optionElement = document.createElement("ion-select-option");
                 optionElement.value = departamento.id;
                 optionElement.textContent = departamento.nombre;
                 selectElement.appendChild(optionElement);
-
             }
         })
         .catch(function (error) {
-            //  dqs("").innerHTML = "Encontrado";
+            dqs("#errorAddP").innerHTML = "[SetDeptos] Ha ocurrido un error: " + error;
         })
         .then(function (datoError) {
             if (datoError != undefined) {
-                // dqs("").innerHTML = "Encontrado";
+                dqs("#errorAddP").innerHTML = datoError;
             }
         })
 }
 //#endregion
 
 dqs("#slcDepartamentos").addEventListener("ionChange", GetCitys);
-//#region GETCytis /ciudades.php?idDepartamento=3208
+
+//#region GetCitys | /ciudades.php?idDepartamento=3208
 function GetCitys() {
     let tok = localStorage.getItem("token");
     let idu = localStorage.getItem("idus");
@@ -135,7 +145,8 @@ function GetCitys() {
         .then(ConvResp)
         .then(function (data) {
             console.log("llego");
-            if (data.ciudades.length <= 0) {//tirar error
+            if (data.ciudades.length <= 0) {
+                dqs("#errorAddP").innerHTML = "Ha ocurrido un error.";
             } else {
                 console.log(data.ciudades);
                 slcCiudades.innerHTML = "";
@@ -149,19 +160,18 @@ function GetCitys() {
             }
         })
         .catch(function (error) {
-            //  dqs("").innerHTML = "Encontrado";
-            console.log(Error);
+            dqs("#errorAddP").innerHTML = "[GetCitys] Ha ocurrido un error: " + error;
         })
         .then(function (datoError) {
             if (datoError != undefined) {
-                // dqs("").innerHTML = "Encontrado";
+                dqs("#errorAddP").innerHTML = datoError;
             }
         })
 }
 //#endregion
 
-//#region /ocupaciones.php
 
+//#region | /ocupaciones.php
 function GetOcups(num) {
     console.log(this);
     let tok = localStorage.getItem("token");
@@ -178,9 +188,8 @@ function GetOcups(num) {
     })
         .then(ConvResp)
         .then(function (data) {
-            console.log("llego");
             if (data.ocupaciones.length <= 0) {
-                console.log(data.ocupaciones);
+
             } else if (num === 4) {
                 for (let i = 0; i < data.ocupaciones.length; i++) {
                     let ocupacion = data.ocupaciones[i];
@@ -188,7 +197,6 @@ function GetOcups(num) {
                     optionElement.value = ocupacion.id;
                     optionElement.textContent = ocupacion.ocupacion;
                     slcoCUP.appendChild(optionElement);
-                    console.log(optionElement.value);
                 }
             } else if (num === 5) {
                 for (let i = 0; i < data.ocupaciones.length; i++) {
@@ -197,23 +205,32 @@ function GetOcups(num) {
                     optionElement.value = ocupacion.id;
                     optionElement.textContent = ocupacion.ocupacion;
                     slcoCUP2.appendChild(optionElement);
-                    console.log(optionElement.value);
                 }
             }
         })
         .catch(function (error) {
-            //  dqs("").innerHTML = "Encontrado";
-            console.log(Error);
+            if(num === 4){
+                dqs("#errorAddP").innerHTML = "[GetOcups] Ha ocurrido un error: " + error;
+            }
+            else if(num === 5){
+                dqs("#msj-sec-listadoCensados").innerHTML = "[GetOcups] Ha ocurrido un error: " + error;
+            }
         })
         .then(function (datoError) {
             if (datoError != undefined) {
+                if(num === 4){
+                    dqs("#errorAddP").innerHTML = "[GetOcups] Ha ocurrido un error: " + datoError;
+                }
+                else if(num === 5){
+                    dqs("#msj-sec-listadoCensados").innerHTML = "[GetOcups] Ha ocurrido un error: " + datoError;
+                }
             }
         })
 }
-
 //#endregion
 
-//#region AGREGAR CENSO /personas.php
+
+//#region AGREGAR CENSO | /personas.php
 function AddPers() {
     let tok = localStorage.getItem("token");
     let idu = localStorage.getItem("idus");
@@ -221,7 +238,7 @@ function AddPers() {
 
     if (tok === null) {
         ruteo.push("/");
-        throw new Error("No estas logueado"); //se tiene que cargar en el párrafo de inicio de sesion
+        dqs("#login-msg").innerHTML = "Debe loguearse.";
     }
     let name = dqs("#nombrePersona").value;
     let dpto = dqs("#slcDepartamentos").value;
@@ -258,17 +275,18 @@ function AddPers() {
         })
             .then(ConvResp)
             .then(function (data) {
-                // dqs("").innerHTML = "Encontrado";
+                dqs("#errorAddP").innerHTML = "Censo creado correctamente.";
             })
             .catch(function (error) {
-                // dqs("").innerHTML = "Encontrado";
+                dqs("#errorAddP").innerHTML = "[AddPers] Ha ocurrido un error inesperado: " + error;
             })
         }
     }
 }
 //#endregion
 
-//#region GET PERSONAS /personas.php?idUsuario=6 
+
+//#region GET PERSONAS | /personas.php?idUsuario=6 
 function GetPers() {
     let tok = localStorage.getItem("token");
     let idu = localStorage.getItem("idus");
@@ -286,8 +304,7 @@ function GetPers() {
             localStorage.setItem("cantidadCen", data.personas.length)
             let qM = 0;
             for (let i = 0; i < data.personas.length; i++) {
-                //3218
-                console.log("tabien");
+                //3218 (Id Montevideo).
                 let dp = data.personas[i];
                 if (dp.departamento == 3218) {
                     qM++;
@@ -295,20 +312,19 @@ function GetPers() {
             }
             localStorage.setItem("cantidadMvd", qM);
             MostrarPersonas();
+            dqs("#msj-sec-listadoCensados").innerHTML = "Censados encontrados: ";
         })
         .catch(function (error) {
-            console.log("tamal")
-
-            //dqs("").innerHTML = "Encontrado";
+            dqs("#msj-sec-listadoCensados").innerHTML = "[GetPers] Ha ocurrido un error: " + error;
         })
         .then(function (datoError) {
             if (datoError != undefined) {
-
-                //dqs("").innerHTML = "Encontrado";
+                dqs("#msj-sec-listadoCensados").innerHTML = datoError;
             }
         })
 }
 //#endregion
+
 
 //#region MAPA
 function SetearPosicionDispositivo(position) {
@@ -331,11 +347,10 @@ function MostrarMapa() {
 
 function MostrarError() {
 }
-
 //#endregion
 
 
-//#region FINDALLCENSADOS /totalCensados.php totalcens
+//#region FINDALLCENSADOS | /totalCensados.php totalcens
 function FindAllCensa2() {
     let tok = localStorage.getItem("token");
     let idu = localStorage.getItem("idus");
@@ -356,15 +371,18 @@ function FindAllCensa2() {
             dqs("#censMvd").innerHTML = "  Cantidad de personas censadas en Montevideo:  " + qM;
         })
         .catch(function (error) {
+            dqs("#sec-totcens-msj").innerHTML = "[TotalCensados] Ha habido un error " + error;
         })
         .then(function (datoError) {
             if (datoError != undefined) {
+                dqs("#sec-totcens-msj").innerHTML = datoError;
             }
         })
 }
 //#endregion
 
 
+//#region Imprimir personas
 function MostrarPersonas() {
     let Tabla =
         `<ion-row>
@@ -406,7 +424,6 @@ function filtroByOcu() {
         const element = personasArray[i];
         ret = element.ocupacion;
         if (ocu === ret) {
-
             Tabla +=
                 `<ion-row>
                 <ion-col>${element.nombre}</ion-col>
@@ -417,7 +434,6 @@ function filtroByOcu() {
             </ion-row>`;
         }
     }
-
     document.querySelector("#gridContainer").innerHTML = Tabla;
 }
 function setnombrebyid(id) {
@@ -429,3 +445,4 @@ function setnombrebyid(id) {
         }
     }
 }
+//#endregion

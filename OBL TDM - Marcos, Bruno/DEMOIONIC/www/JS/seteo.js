@@ -24,7 +24,7 @@ function SetDeptosA() {
         headers: {
             "Content-Type": "application/json",
             "apikey": tok,
-            "iduser": idu // todo gestion de errores, 
+            "iduser": idu 
         }
     })
         .then(ConvResp)
@@ -36,11 +36,11 @@ function SetDeptosA() {
             }
         })
         .catch(function (error) {
-            //  dqs("").innerHTML = "Encontrado";
+            alert("[SetDeptosA] Ha ocurrido un error: " + error);
         })
         .then(function (datoError) {
             if (datoError != undefined) {
-                // dqs("").innerHTML = "Encontrado";
+                alert("[SetDeptosA] Ha ocurrido un error: " + datoError);
             }
         })
 }
@@ -65,23 +65,21 @@ function GetCitysA() {
                 const ciudad = data.ciudades[i];
                 city = new SetNom(ciudad.id, ciudad.nombre)
                 setnames.push(city);
-                console.log(setnames.length);
             }
         })
         .catch(function (error) {
-            //  dqs("").innerHTML = "Encontrado";
-            console.log(Error);
+            alert("[GetCitysA] Ha ocurrido un error: " + error);
         })
         .then(function (datoError) {
             if (datoError != undefined) {
-                // dqs("").innerHTML = "Encontrado";
+                alert("[GetCitysA] Ha ocurrido un error: " + datoError);
             }
         })
 }
 //#endregion
 
-//#region /ocupaciones.php
 
+//#region /ocupaciones.php
 function GetOcupsA() {
     console.log(this);
     let tok = localStorage.getItem("token");
@@ -101,10 +99,9 @@ function GetOcupsA() {
                 let ocupacion = data.ocupaciones[i];
                 ocup = new SetNom(ocupacion.id, ocupacion.ocupacion);
                 setnames.push(ocup);
-                console.log(setnames.length);
             }
         })
         .catch(function (error) {
-            console.log(Error);
+            alert("[GetOcupsA] Ha ocurrido un error: " + error);
         })
 }
