@@ -98,7 +98,6 @@ function mostrarPagina(evento) {
         document.querySelector("#sec-totcens").style.display = "none";
     }
     else if (evento.detail.to == "/page-six") {
-        MostrarMapa();
         document.querySelector("#sec-mapa").style.display = "block";
         document.querySelector("#sec-listadoCensados").style.display = "none";
         document.querySelector("#sec-agregarCensado").style.display = "none";
@@ -108,6 +107,7 @@ function mostrarPagina(evento) {
         document.querySelector("#sec-totcens").style.display = "none";
     }
     else if (evento.detail.to == "/page-seven") {
+        //FindAllCensa2();
         document.querySelector("#sec-mapa").style.display = "none";
         document.querySelector("#sec-listadoCensados").style.display = "none";
         document.querySelector("#sec-agregarCensado").style.display = "none";

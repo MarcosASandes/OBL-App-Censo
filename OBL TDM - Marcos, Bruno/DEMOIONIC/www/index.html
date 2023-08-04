@@ -262,9 +262,13 @@
                     <ion-input label="Distancia: " id="distanciaMapa"></ion-input>
                 </ion-item>
 
-                <ion-button color="dark" id="btnFiltroMapa">Buscar</ion-button>
+                <ion-button color="dark" id="btnFiltroMapa" onclick="GetDistanciaMapa()">Buscar</ion-button>
 
-                <ion-content id="map">
+                <ion-item>
+                    <p id="sec-mapa-msg"></p>
+                </ion-item>
+
+                <ion-content id="map" style="display: none;">
 
                 </ion-content>
             </ion-content>

@@ -333,26 +333,75 @@ function GetPers() {
 
 
 //#region MAPA
+
+//Obtener la posicion del dispositivo con el que interactua el usuario (censista).
 function SetearPosicionDispositivo(position) {
     console.log(position);
     latitudeOrigen = position.coords.latitude;
     longitudeOrigen = position.coords.longitude;
 }
 
-function MostrarMapa() {
+
+
+//Hace posible la visualizacion del mapa en el HTML.
+function MostrarMapa(distancia) {
     if (navigator.geolocation) {
+        document.querySelector("#map").style.display = "block";
         var map = L.map('map').setView([-34.903609710179076, -56.190603059985875], 13);
-        L.tileLayer('https://tile.openstreetmap.org/%7Bz%7D/%7Bx%7D/%7By%7D.png', {
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '© OpenStreetMap'
         }).addTo(map);
         L.marker([latitudeOrigen, longitudeOrigen]).bindPopup("Usted").addTo(map);
-        //mapaInicializado = true;
+        var circle = L.circle([latitudeOrigen, longitudeOrigen], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: distancia
+        }).addTo(map);
     }
 }
 
-function MostrarError() {
+//Obtiene la distancia que seleccione el usuario. Ejecuta MostrarMapa().
+function GetDistanciaMapa(){
+    let distancia = dqs("#distanciaMapa").value;
+    MostrarMapa(distancia);
 }
+
+//Informa de error en el parrafo correspondiente.
+function MostrarError(error) {
+    dqs("#sec-mapa-msg").innerHTML = "Ocurrio un error: " + error;
+}
+
+/*La premisa es que dada una distancia (radio) por el usuario, se muestre en el mapa las ciudades
+dentro de ese radio en las que el usuario hizo un censo. Por lo tanto debemos obtener los censos de ese user*/
+
+/*function ObtenerTodasLasCiudadesConCenso(){
+    let tok = localStorage.getItem("token");
+    let idu = localStorage.getItem("idus");
+    //let ubicacionesMapa = [];
+    fetch(censoAPI + "/personas.php?idUsuario=" + `${idu}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "apikey": tok,
+            "iduser": idu
+        }
+    })
+        .then(ConvResp)
+        .then(function (data) {
+            
+        })
+        .catch(function (error) {
+            //dqs("").innerHTML = "";
+        })
+        .then(function (datoError) {
+            if (datoError != undefined) {
+                //dqs("").innerHTML = "";
+            }
+        })
+}*/
+
 //#endregion
 
 
