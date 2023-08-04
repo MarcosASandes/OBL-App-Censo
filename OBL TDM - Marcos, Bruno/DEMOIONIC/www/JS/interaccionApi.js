@@ -5,6 +5,8 @@ let latitudeOrigen;
 let longitudeOrigen;
 navigator.geolocation.getCurrentPosition(SetearPosicionDispositivo, MostrarError);
 
+
+
 //#region REGISTRO | /usuarios.php
 function registrarUsuario() {
     let user = dqs("#txtUser").value;
@@ -37,6 +39,7 @@ function registrarUsuario() {
                     OcultarBotones();
                     MostrarBienvenida();
                     ruteo.push("/");
+                    PrecargarArry();
                 })
                 .catch(function (Error) {
                     throw Error;
@@ -82,6 +85,7 @@ function iniciarSesion() {
             OcultarBotones();
             MostrarBienvenida();
             ruteo.push("/");
+            PrecargarArry();
         })
         .catch(function (error) {
             document.querySelector("#login-msg").innerHTML = error;
@@ -331,8 +335,57 @@ function GetPers() {
 }
 //#endregion
 
+function setnombrebyid(id) {
+    let arry = setRet();
+    for (let i = 0; i < arry.length; i++) {
+        let pos = arry[i];
+        if (id === pos.id) {
+            return pos.name;
+        }
+    }
+}
 
-//#region MAPA
+/*function getNombreCiudadPorId(id){
+    let tok = localStorage.getItem("token");
+    let idu = localStorage.getItem("idus");
+    fetch(censoAPI + "/ciudades.php", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "apikey": tok,
+            "iduser": idu
+        }
+    })
+        .then(ConvResp)
+        .then(function (data) {
+
+            for (let i = 0; i < data.ciudades.length; i++) {
+                const ciudad = data.ciudades[i];
+                if(data.ciudades[i].id === id){
+                    return ciudad.nombre;
+                }
+            }
+        })
+        .catch(function (error) {
+            return error;
+        })
+        .then(function (datoError) {
+            if (datoError != undefined) {
+                alert("[getNombreCiudadPorId] Ha ocurrido un error: " + datoError);
+            }
+        })
+}*/
+
+//#region MAPA TODOOOOOOO
+
+class Coordenadas {
+    constructor(latitud, longitud) {
+        this.lat = latitud;
+        this.long = longitud;
+    }
+}
+
+let coordsCensos = [];
 
 //Obtener la posicion del dispositivo con el que interactua el usuario (censista).
 function SetearPosicionDispositivo(position) {
@@ -346,6 +399,7 @@ function SetearPosicionDispositivo(position) {
 //Hace posible la visualizacion del mapa en el HTML.
 function MostrarMapa(distancia) {
     if (navigator.geolocation) {
+        //PrecargarArry();
         document.querySelector("#map").style.display = "block";
         var map = L.map('map').setView([-34.903609710179076, -56.190603059985875], 13);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -359,6 +413,11 @@ function MostrarMapa(distancia) {
             fillOpacity: 0.5,
             radius: distancia
         }).addTo(map);
+ 
+        for(let i = 0; i < coordsCensos.length; i++){
+            const element = coordsCensos[i];
+            L.marker([element.lat, element.long]).bindPopup("Censo").addTo(map);
+        }
     }
 }
 
@@ -373,10 +432,12 @@ function MostrarError(error) {
     dqs("#sec-mapa-msg").innerHTML = "Ocurrio un error: " + error;
 }
 
+
 /*La premisa es que dada una distancia (radio) por el usuario, se muestre en el mapa las ciudades
 dentro de ese radio en las que el usuario hizo un censo. Por lo tanto debemos obtener los censos de ese user*/
-
-/*function ObtenerTodasLasCiudadesConCenso(){
+ObtenerTodasLasCiudadesConCenso();
+function ObtenerTodasLasCiudadesConCenso(){
+    //PrecargarArry();
     let tok = localStorage.getItem("token");
     let idu = localStorage.getItem("idus");
     //let ubicacionesMapa = [];
@@ -390,19 +451,54 @@ dentro de ese radio en las que el usuario hizo un censo. Por lo tanto debemos ob
     })
         .then(ConvResp)
         .then(function (data) {
+
+            //console.log(getNombreCiudadPorId("Montevideo"));
+
+            for(let i = 0; i < data.personas.length; i++){
+                const ciudadCenso = data.personas[i].ciudad;
+                console.log(setnombrebyid(ciudadCenso));
+                fetch("https://nominatim.openstreetmap.org/search?city="+setnombrebyid(ciudadCenso)+"&country=Uruguay&format=json")
+                .then(function(response){
+                    if(response.ok){
+                        return response.json();
+                    }
+                    else{
+                        return Promise.reject(response);
+                    }
+                })
+                .then(function(datosCoords){
+                    let latitudCenso = datosCoords[0].lat;
+                    let longitudCenso = datosCoords[0].lon;
+                    let latlonCenso = latitudCenso + "|" + longitudCenso;
+                    console.log(latlonCenso);
+                    //coordsCensos.push(latlonCenso);
+                    let nuevaCoords = new Coordenadas(latitudCenso, longitudCenso);
+                    coordsCensos.push(nuevaCoords);
+                })
+                .catch(function(error){
+                    //error;
+                })
+            }
             
+            console.log(data.personas[1].ciudad);
+            console.log(setnombrebyid(129833))
+            console.log(setnombrebyid(data.personas[1].ciudad))
         })
         .catch(function (error) {
             //dqs("").innerHTML = "";
         })
         .then(function (datoError) {
             if (datoError != undefined) {
-                //dqs("").innerHTML = "";
+                dqs("#sec-mapa-msg").innerHTML = "Problemaa";
             }
         })
-}*/
+}
+
+
 
 //#endregion
+
+
 
 
 //#region FINDALLCENSADOS | /totalCensados.php totalcens
@@ -491,13 +587,5 @@ function filtroByOcu() {
     }
     document.querySelector("#gridContainer").innerHTML = Tabla;
 }
-function setnombrebyid(id) {
-    let arry = setRet();
-    for (let i = 0; i < arry.length; i++) {
-        let pos = arry[i];
-        if (id === pos.id) {
-            return pos.name;
-        }
-    }
-}
+
 //#endregion

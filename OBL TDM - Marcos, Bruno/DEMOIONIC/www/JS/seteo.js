@@ -5,15 +5,23 @@ class SetNom {
     }
 }
 let setnames = [];
-function PrecargarArry(){
-    if (localStorage.getItem("token") !== null) {
+//PrecargarArry();
+function PrecargarArry() {
+    if (setnames.length < 149) {
         SetDeptosA();
         GetCitysA();
         GetOcupsA();
-   
     }
+
+    /*if (localStorage.getItem("token") !== null) {
+
+    }*/
 }
-function setRet(){ return setnames;}
+
+function setRet() {
+    return setnames;
+}
+
 //#region SETDEPTOS /departamentos.php 
 function SetDeptosA() {
     let tok = localStorage.getItem("token");
@@ -24,7 +32,7 @@ function SetDeptosA() {
         headers: {
             "Content-Type": "application/json",
             "apikey": tok,
-            "iduser": idu 
+            "iduser": idu
         }
     })
         .then(ConvResp)
@@ -36,7 +44,7 @@ function SetDeptosA() {
             }
         })
         .catch(function (error) {
-            alert("[SetDeptosA] Ha ocurrido un error: " + error);
+            return error;
         })
         .then(function (datoError) {
             if (datoError != undefined) {
@@ -68,7 +76,7 @@ function GetCitysA() {
             }
         })
         .catch(function (error) {
-            alert("[GetCitysA] Ha ocurrido un error: " + error);
+            return error;
         })
         .then(function (datoError) {
             if (datoError != undefined) {
@@ -102,6 +110,11 @@ function GetOcupsA() {
             }
         })
         .catch(function (error) {
-            alert("[GetOcupsA] Ha ocurrido un error: " + error);
+            return error;
+        })
+        .then(function (datoError) {
+            if (datoError != undefined) {
+                alert("[GetOcupsA] Ha ocurrido un error: " + datoError);
+            }
         })
 }

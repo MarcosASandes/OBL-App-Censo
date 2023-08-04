@@ -98,6 +98,7 @@ function mostrarPagina(evento) {
         document.querySelector("#sec-totcens").style.display = "none";
     }
     else if (evento.detail.to == "/page-six") {
+        PrecargarArry();
         document.querySelector("#sec-mapa").style.display = "block";
         document.querySelector("#sec-listadoCensados").style.display = "none";
         document.querySelector("#sec-agregarCensado").style.display = "none";
@@ -108,13 +109,15 @@ function mostrarPagina(evento) {
     }
     else if (evento.detail.to == "/page-seven") {
         //FindAllCensa2();
+        //PrecargarArry();
+        document.querySelector("#sec-totcens").style.display = "block";
         document.querySelector("#sec-mapa").style.display = "none";
         document.querySelector("#sec-listadoCensados").style.display = "none";
         document.querySelector("#sec-agregarCensado").style.display = "none";
         document.querySelector("#sec-login").style.display = "none";
         document.querySelector("#sec-registro").style.display = "none";
         document.querySelector("#sec-inicio").style.display = "none";
-        document.querySelector("#sec-totcens").style.display = "block";
+        
     }
 }
 
