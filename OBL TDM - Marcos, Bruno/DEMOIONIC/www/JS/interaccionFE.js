@@ -127,3 +127,14 @@ function RedireccionALogin(){
     ruteo.push("/page-three");
 }
 
+MostrarBienvenida();
+
+function MostrarBienvenida(){
+    if(usConect()){
+        dqs("#msg-bienvenida").innerHTML = "Bienvenido/a";
+    }
+    else{
+        dqs("#msg-bienvenida").innerHTML = "Debe loguearse o registrarse.";
+    }
+}
+

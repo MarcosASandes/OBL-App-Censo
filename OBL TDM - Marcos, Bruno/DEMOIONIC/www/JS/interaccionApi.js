@@ -35,6 +35,8 @@ function registrarUsuario() {
                     localStorage.setItem("idus", data.id);
                     document.querySelector("#registro-msg").innerHTML = "Registrado correctamente.";
                     OcultarBotones();
+                    MostrarBienvenida();
+                    ruteo.push("/");
                 })
                 .catch(function (Error) {
                     throw Error;
@@ -52,6 +54,8 @@ function registrarUsuario() {
 function logout() {
     localStorage.clear();
     OcultarBotones();
+    MostrarBienvenida();
+    ruteo.push("/");
 }
 //#endregion
 
@@ -76,6 +80,8 @@ function iniciarSesion() {
             document.querySelector("#login-msg").innerHTML = "Login correcto.";
             localStorage.setItem("idus", data.id);
             OcultarBotones();
+            MostrarBienvenida();
+            ruteo.push("/");
         })
         .catch(function (error) {
             document.querySelector("#login-msg").innerHTML = error;
