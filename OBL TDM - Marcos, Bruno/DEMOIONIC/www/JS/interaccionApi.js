@@ -12,10 +12,10 @@ function registrarUsuario() {
     let user = dqs("#txtUser").value;
     let pass = dqs("#txtPass").value;
 
-    if(user === "" || pass === ""){
+    if (user === "" || pass === "") {
         document.querySelector("#registro-msg").innerHTML = "Datos no validos.";
     }
-    else{
+    else {
         try {
             if (user.trim().length == 0 || pass.trim().length == 0) {
                 throw new Error("Inconsistencia de datos");
@@ -109,13 +109,13 @@ function SetDeptos() {
         headers: {
             "Content-Type": "application/json",
             "apikey": tok,
-            "iduser": idu 
+            "iduser": idu
         }
     })
         .then(ConvResp)
         .then(function (data) {
             const selectElement = document.querySelector("#slcDepartamentos");
-            selectElement.innerHTML = "";            
+            selectElement.innerHTML = "";
             for (let i = 0; i < data.departamentos.length; i++) {
                 let departamento = data.departamentos[i];
                 const optionElement = document.createElement("ion-select-option");
@@ -219,19 +219,19 @@ function GetOcups(num) {
             }
         })
         .catch(function (error) {
-            if(num === 4){
+            if (num === 4) {
                 dqs("#errorAddP").innerHTML = "[GetOcups] Ha ocurrido un error: " + error;
             }
-            else if(num === 5){
+            else if (num === 5) {
                 dqs("#msj-sec-listadoCensados").innerHTML = "[GetOcups] Ha ocurrido un error: " + error;
             }
         })
         .then(function (datoError) {
             if (datoError != undefined) {
-                if(num === 4){
+                if (num === 4) {
                     dqs("#errorAddP").innerHTML = "[GetOcups] Ha ocurrido un error: " + datoError;
                 }
-                else if(num === 5){
+                else if (num === 5) {
                     dqs("#msj-sec-listadoCensados").innerHTML = "[GetOcups] Ha ocurrido un error: " + datoError;
                 }
             }
@@ -263,33 +263,33 @@ function AddPers() {
         const tiempoActual = Date.now();
         const tiempoNacimiento = fechaNacimiento.getTime();
         const diferenciaTiempo = tiempoActual - tiempoNacimiento;
-        const diferenciaAnios = diferenciaTiempo/ (1000 * 60 * 60 * 24 * 365.25);
+        const diferenciaAnios = diferenciaTiempo / (1000 * 60 * 60 * 24 * 365.25);
         if (diferenciaAnios < 18) {
             dqs("#errorAddP").innerHTML = "Como menor solo puedes ser estudiante o no trabajar";
         } else {
-        fetch(censoAPI + "/personas.php", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "apikey": tok,
-                "iduser": idu
-            },
-            body: JSON.stringify({
-                "idUsuario": idu,
-                "nombre": name,
-                "departamento": dpto,
-                "ciudad": city,
-                "fechaNacimiento": fchNac,
-                "ocupacion": Ocup
+            fetch(censoAPI + "/personas.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "apikey": tok,
+                    "iduser": idu
+                },
+                body: JSON.stringify({
+                    "idUsuario": idu,
+                    "nombre": name,
+                    "departamento": dpto,
+                    "ciudad": city,
+                    "fechaNacimiento": fchNac,
+                    "ocupacion": Ocup
+                })
             })
-        })
-            .then(ConvResp)
-            .then(function (data) {
-                dqs("#errorAddP").innerHTML = "Censo creado correctamente.";
-            })
-            .catch(function (error) {
-                dqs("#errorAddP").innerHTML = "[AddPers] Ha ocurrido un error inesperado: " + error;
-            })
+                .then(ConvResp)
+                .then(function (data) {
+                    dqs("#errorAddP").innerHTML = "Censo creado correctamente.";
+                })
+                .catch(function (error) {
+                    dqs("#errorAddP").innerHTML = "[AddPers] Ha ocurrido un error inesperado: " + error;
+                })
         }
     }
 }
@@ -385,6 +385,7 @@ class Coordenadas {
     }
 }
 
+let ciudadesEncontradas = [];
 let coordsCensos = [];
 
 //Obtener la posicion del dispositivo con el que interactua el usuario (censista).
@@ -399,7 +400,6 @@ function SetearPosicionDispositivo(position) {
 //Hace posible la visualizacion del mapa en el HTML.
 function MostrarMapa(distancia) {
     if (navigator.geolocation) {
-        //PrecargarArry();
         document.querySelector("#map").style.display = "block";
         var map = L.map('map').setView([-34.903609710179076, -56.190603059985875], 13);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -413,16 +413,25 @@ function MostrarMapa(distancia) {
             fillOpacity: 0.5,
             radius: distancia
         }).addTo(map);
- 
-        for(let i = 0; i < coordsCensos.length; i++){
+
+        for (let i = 0; i < coordsCensos.length; i++) {
             const element = coordsCensos[i];
-            L.marker([element.lat, element.long]).bindPopup("Censo").addTo(map);
+
+            let distanciaCensoUsuario = map.distance([latitudeOrigen, longitudeOrigen], [element.lat, element.long]);
+            console.log(distanciaCensoUsuario);
+            if(distancia >= distanciaCensoUsuario){
+                console.log("Cumple");
+                L.marker([element.lat, element.long]).bindPopup("Censo").addTo(map);
+            }
         }
     }
 }
 
+
+
+
 //Obtiene la distancia que seleccione el usuario. Ejecuta MostrarMapa().
-function GetDistanciaMapa(){
+function GetDistanciaMapa() {
     let distancia = dqs("#distanciaMapa").value;
     MostrarMapa(distancia);
 }
@@ -433,10 +442,12 @@ function MostrarError(error) {
 }
 
 
+
+
 /*La premisa es que dada una distancia (radio) por el usuario, se muestre en el mapa las ciudades
 dentro de ese radio en las que el usuario hizo un censo. Por lo tanto debemos obtener los censos de ese user*/
-ObtenerTodasLasCiudadesConCenso();
-function ObtenerTodasLasCiudadesConCenso(){
+//ObtenerTodasLasCiudadesConCenso();
+function ObtenerTodasLasCiudadesConCenso() {
     //PrecargarArry();
     let tok = localStorage.getItem("token");
     let idu = localStorage.getItem("idus");
@@ -452,9 +463,42 @@ function ObtenerTodasLasCiudadesConCenso(){
         .then(ConvResp)
         .then(function (data) {
 
+            //console.log(data.personas[1].ciudad);
+
+            for (let i = 0; data.personas.length; i++) {
+                const ciudadCenso = data.personas[i].ciudad;
+                console.log(ciudadCenso);
+                fetch("https://censo.develotion.com//ciudades.php", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "apikey": tok,
+                        "iduser": idu
+                    }
+                })
+                    .then(ConvResp)
+                    .then(function (datos) {
+                        for (let i = 0; i < datos.ciudades.length; i++) {
+                            const ciudad = datos.ciudades[i];
+                            if (ciudadCenso === ciudad.id) {
+                                console.log(ciudad.id);
+
+                                let nuevaCoords = new Coordenadas(ciudad.latitud, ciudad.longitud);
+                                coordsCensos.push(nuevaCoords);
+                            }
+                        }
+                    })
+                    .catch(function (error) {
+                        //error;
+                    })
+            }
+
+
+
+
             //console.log(getNombreCiudadPorId("Montevideo"));
 
-            for(let i = 0; i < data.personas.length; i++){
+            /*for(let i = 0; i < data.personas.length; i++){
                 const ciudadCenso = data.personas[i].ciudad;
                 console.log(setnombrebyid(ciudadCenso));
                 fetch("https://nominatim.openstreetmap.org/search?city="+setnombrebyid(ciudadCenso)+"&country=Uruguay&format=json")
@@ -482,7 +526,7 @@ function ObtenerTodasLasCiudadesConCenso(){
             
             console.log(data.personas[1].ciudad);
             console.log(setnombrebyid(129833))
-            console.log(setnombrebyid(data.personas[1].ciudad))
+            console.log(setnombrebyid(data.personas[1].ciudad))*/
         })
         .catch(function (error) {
             //dqs("").innerHTML = "";

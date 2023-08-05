@@ -99,6 +99,7 @@ function mostrarPagina(evento) {
     }
     else if (evento.detail.to == "/page-six") {
         PrecargarArry();
+        ObtenerTodasLasCiudadesConCenso();
         document.querySelector("#sec-mapa").style.display = "block";
         document.querySelector("#sec-listadoCensados").style.display = "none";
         document.querySelector("#sec-agregarCensado").style.display = "none";
