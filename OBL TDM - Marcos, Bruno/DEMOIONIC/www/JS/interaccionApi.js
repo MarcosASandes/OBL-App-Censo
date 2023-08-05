@@ -250,6 +250,7 @@ function AddPers() {
         ruteo.push("/");
         dqs("#login-msg").innerHTML = "Debe loguearse.";
     }
+
     let name = dqs("#nombrePersona").value;
     let dpto = dqs("#slcDepartamentos").value;
     let city = dqs("#slcCiudades").value;
@@ -258,15 +259,16 @@ function AddPers() {
 
     if (name == "" || fchNac == "" || dpto == null || city == null || Ocup == null) {
         dqs("#errorAddP").innerHTML = "Chequear datos";
-    } else if (Ocup !== 5 || Ocup !== 8) {
+    } else {
+
         const fechaNacimiento = new Date(fchNac);
         const tiempoActual = Date.now();
         const tiempoNacimiento = fechaNacimiento.getTime();
         const diferenciaTiempo = tiempoActual - tiempoNacimiento;
         const diferenciaAnios = diferenciaTiempo / (1000 * 60 * 60 * 24 * 365.25);
-        if (diferenciaAnios < 18) {
-            dqs("#errorAddP").innerHTML = "Como menor solo puedes ser estudiante o no trabajar";
-        } else {
+
+
+        if(diferenciaAnios >= 18){
             fetch(censoAPI + "/personas.php", {
                 method: "POST",
                 headers: {
@@ -291,8 +293,39 @@ function AddPers() {
                     dqs("#errorAddP").innerHTML = "[AddPers] Ha ocurrido un error inesperado: " + error;
                 })
         }
+        else{
+            if(Ocup === 5 || Ocup === 8){
+                fetch(censoAPI + "/personas.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "apikey": tok,
+                        "iduser": idu
+                    },
+                    body: JSON.stringify({
+                        "idUsuario": idu,
+                        "nombre": name,
+                        "departamento": dpto,
+                        "ciudad": city,
+                        "fechaNacimiento": fchNac,
+                        "ocupacion": Ocup
+                    })
+                })
+                    .then(ConvResp)
+                    .then(function (data) {
+                        dqs("#errorAddP").innerHTML = "Censo creado correctamente.";
+                    })
+                    .catch(function (error) {
+                        dqs("#errorAddP").innerHTML = "[AddPers] Ha ocurrido un error inesperado: " + error;
+                    })
+            }
+            else{
+                dqs("#errorAddP").innerHTML = "Como menor solo puedes ser estudiante o no trabajar";
+            }
+        }
     }
 }
+
 //#endregion
 
 
@@ -419,7 +452,7 @@ function MostrarMapa(distancia) {
 
             let distanciaCensoUsuario = map.distance([latitudeOrigen, longitudeOrigen], [element.lat, element.long]);
             console.log(distanciaCensoUsuario);
-            if(distancia >= distanciaCensoUsuario){
+            if (distancia >= distanciaCensoUsuario) {
                 console.log("Cumple");
                 L.marker([element.lat, element.long]).bindPopup("Censo").addTo(map);
             }
