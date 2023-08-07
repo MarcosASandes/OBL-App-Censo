@@ -5,17 +5,12 @@ class SetNom {
     }
 }
 let setnames = [];
-//PrecargarArry();
 function PrecargarArry() {
     if (setnames.length < 149) {
         SetDeptosA();
         GetCitysA();
         GetOcupsA();
     }
-
-    /*if (localStorage.getItem("token") !== null) {
-
-    }*/
 }
 
 function setRet() {

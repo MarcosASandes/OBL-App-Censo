@@ -378,36 +378,7 @@ function setnombrebyid(id) {
     }
 }
 
-/*function getNombreCiudadPorId(id){
-    let tok = localStorage.getItem("token");
-    let idu = localStorage.getItem("idus");
-    fetch(censoAPI + "/ciudades.php", {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "apikey": tok,
-            "iduser": idu
-        }
-    })
-        .then(ConvResp)
-        .then(function (data) {
 
-            for (let i = 0; i < data.ciudades.length; i++) {
-                const ciudad = data.ciudades[i];
-                if(data.ciudades[i].id === id){
-                    return ciudad.nombre;
-                }
-            }
-        })
-        .catch(function (error) {
-            return error;
-        })
-        .then(function (datoError) {
-            if (datoError != undefined) {
-                alert("[getNombreCiudadPorId] Ha ocurrido un error: " + datoError);
-            }
-        })
-}*/
 
 //#region MAPA TODOOOOOOO
 
@@ -484,7 +455,7 @@ function ObtenerTodasLasCiudadesConCenso() {
     //PrecargarArry();
     let tok = localStorage.getItem("token");
     let idu = localStorage.getItem("idus");
-    //let ubicacionesMapa = [];
+
     fetch(censoAPI + "/personas.php?idUsuario=" + `${idu}`, {
         method: "GET",
         headers: {
@@ -496,7 +467,7 @@ function ObtenerTodasLasCiudadesConCenso() {
         .then(ConvResp)
         .then(function (data) {
 
-            //console.log(data.personas[1].ciudad);
+
 
             for (let i = 0; data.personas.length; i++) {
                 const ciudadCenso = data.personas[i].ciudad;
@@ -522,47 +493,12 @@ function ObtenerTodasLasCiudadesConCenso() {
                         }
                     })
                     .catch(function (error) {
-                        //error;
+                        dqs("#sec-mapa-msg").innerHTML = error;
                     })
             }
-
-
-
-
-            //console.log(getNombreCiudadPorId("Montevideo"));
-
-            /*for(let i = 0; i < data.personas.length; i++){
-                const ciudadCenso = data.personas[i].ciudad;
-                console.log(setnombrebyid(ciudadCenso));
-                fetch("https://nominatim.openstreetmap.org/search?city="+setnombrebyid(ciudadCenso)+"&country=Uruguay&format=json")
-                .then(function(response){
-                    if(response.ok){
-                        return response.json();
-                    }
-                    else{
-                        return Promise.reject(response);
-                    }
-                })
-                .then(function(datosCoords){
-                    let latitudCenso = datosCoords[0].lat;
-                    let longitudCenso = datosCoords[0].lon;
-                    let latlonCenso = latitudCenso + "|" + longitudCenso;
-                    console.log(latlonCenso);
-                    //coordsCensos.push(latlonCenso);
-                    let nuevaCoords = new Coordenadas(latitudCenso, longitudCenso);
-                    coordsCensos.push(nuevaCoords);
-                })
-                .catch(function(error){
-                    //error;
-                })
-            }
-            
-            console.log(data.personas[1].ciudad);
-            console.log(setnombrebyid(129833))
-            console.log(setnombrebyid(data.personas[1].ciudad))*/
         })
         .catch(function (error) {
-            //dqs("").innerHTML = "";
+            dqs("#sec-mapa-msg").innerHTML = error
         })
         .then(function (datoError) {
             if (datoError != undefined) {

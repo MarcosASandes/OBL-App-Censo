@@ -109,8 +109,6 @@ function mostrarPagina(evento) {
         document.querySelector("#sec-totcens").style.display = "none";
     }
     else if (evento.detail.to == "/page-seven") {
-        //FindAllCensa2();
-        //PrecargarArry();
         document.querySelector("#sec-totcens").style.display = "block";
         document.querySelector("#sec-mapa").style.display = "none";
         document.querySelector("#sec-listadoCensados").style.display = "none";
